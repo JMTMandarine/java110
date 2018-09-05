@@ -1,12 +1,15 @@
+package bitcamp.java110.cms.control;
 import java.util.Scanner;
+
+import bitcamp.java110.cms.domain.Member;
 
 public class TeacherController {
     
     static Teacher[] teachers=new Teacher[100];
     static int teacherIndex = 0;
-    static Scanner keyIn;
+    public static Scanner keyIn;
     
-    static class Teacher extends Member{
+    private static class Teacher extends Member{
         protected String tel;
         protected int pay;
         protected String subjects;
@@ -32,7 +35,7 @@ public class TeacherController {
         
     }
     
-    static void serviceTeacherMenu() {
+    public static void serviceTeacherMenu() {
         while(true) {
             System.out.println("강사관리>");
             String command = keyIn.nextLine();
@@ -48,7 +51,7 @@ public class TeacherController {
         }
     }
     
-    static void printTeachers() {
+    private static void printTeachers() {
         int count = 0;
         for(Teacher t : teachers) {
             if(count++ ==teacherIndex)
@@ -67,7 +70,7 @@ public class TeacherController {
     
     
     
-    static void inputTeachers() {
+    private static void inputTeachers() {
         while(true) {
             Teacher t=new Teacher();
             
