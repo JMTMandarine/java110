@@ -52,15 +52,16 @@ public class App {
                                 , members[i].getEmail()
                                 , members[i].getPassword());            
         }
-        
     }
     
     static void inputMembers() {
         while(true) {
             Member m=new Member();
             
+            
             System.out.print("이름? ");
             m.setName(keyIn.nextLine());
+            /*members[index].setName(keyIn.nextLine());*/
             
             System.out.print("이메일? ");
             m.setEmail(keyIn.nextLine());
