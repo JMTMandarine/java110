@@ -30,28 +30,28 @@ public class StudentController {
     
     private static void inputStudents() {
         while(true) {
-            Student m=new Student();
+            Student s=new Student();
             
             System.out.print("이름? ");
-            m.setName(keyIn.nextLine());
+            s.setName(keyIn.nextLine());
             /*members[index].setName(keyIn.nextLine());*/
             
             System.out.print("이메일? ");
-            m.setEmail(keyIn.nextLine());
+            s.setEmail(keyIn.nextLine());
             
             System.out.print("암호? ");
-            m.setPassword(keyIn.nextLine());
+            s.setPassword(keyIn.nextLine());
             
             System.out.print("최종학력? ");
-            m.setSchool(keyIn.nextLine());
+            s.setSchool(keyIn.nextLine());
             
             System.out.print("재직여부?(true/false) ");
-            m.setWorking(Boolean.parseBoolean(keyIn.nextLine()));
+            s.setWorking(Boolean.parseBoolean(keyIn.nextLine()));
             
             System.out.print("전화번호? ");
-            m.setTel(keyIn.nextLine());
+            s.setTel(keyIn.nextLine());
             
-            StudentList.add(m);
+            StudentList.add(s);
             
             System.out.print("계속하시겠습니까?(Y/n) ");
             String answer=keyIn.nextLine();
@@ -73,20 +73,13 @@ public class StudentController {
                                 , s.getSchool()
                                 , s.isWorking()
                                 , s.getTel());
-                   
-                    
         }
     }
-    
-    
-
-    
     
     private static void deleteStudent() {
         System.out.print("삭제할 번호? ");
         int no=Integer.parseInt(keyIn.nextLine());
         
-        //삭제s
         if(no < 0||no>=StudentList.size()) {
             System.out.println("잘못된 번호입니다.");
             return;
@@ -101,7 +94,6 @@ public class StudentController {
         System.out.print("조회할 번호? ");
         int no=Integer.parseInt(keyIn.nextLine());
         
-        //삭제s
         if(no < 0||no>=StudentList.size()) {
             System.out.println("잘못된 번호입니다.");
             return;
