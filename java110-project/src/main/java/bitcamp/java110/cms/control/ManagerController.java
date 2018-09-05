@@ -52,7 +52,8 @@ public class ManagerController {
         for(Manager m : managers) {
             if(count++ ==managerIndex)
                 break;
-            System.out.printf("%s, %s, ,%s, %s, %s\n"
+            System.out.printf("%d, %s, %s, ,%s, %s, %s\n"
+                                , count - 1  
                                 , m.getName()
                                 , m.getEmail()
                                 , m.getPassword()

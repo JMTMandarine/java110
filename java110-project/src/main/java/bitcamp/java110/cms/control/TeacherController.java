@@ -60,7 +60,8 @@ public class TeacherController {
         for(Teacher t : teachers) {
             if(count++ ==teacherIndex)
                 break;
-            System.out.printf("%s, %s, ,%s, %s, %d, [%s]\n"
+            System.out.printf("%d, %s, %s, ,%s, %s, %d, [%s]\n"
+                                , count - 1  
                                 , t.getName()
                                 , t.getEmail()
                                 , t.getPassword()
