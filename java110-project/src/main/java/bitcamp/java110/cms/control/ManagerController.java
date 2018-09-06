@@ -109,7 +109,6 @@ public class ManagerController {
         System.out.printf("암호 : %s\n",manager.getPassword());
         System.out.printf("최종학력 : %s\n",manager.getPosition());
         System.out.printf("전화 : %s\n",manager.getTel());
-
     }
     
     private void init(){
