@@ -1,6 +1,6 @@
 package util;
 
-public class ArrayList<T> {
+public class ArrayList<T> implements List<T>{
     
     //개별적으로 관리해야할 값이라면 인스턴스변수로 선언
     private Object[] list=new Object[100];
@@ -23,16 +23,20 @@ public class ArrayList<T> {
         list = newList;
     }
     
-    public void remove(int no) {
+    public T remove(int no) {
         if(no < 0|| no >= index) {
             System.out.println("잘못된 번호입니다.");
-            return;
+            return null;
         }
+        
+        @SuppressWarnings("unchecked")
+        T removedObj = (T)list[no];
         
         for(int i=no; i<index-1; i++){
             list[i] = list[i+1];
         }
         index--;
+        return removedObj;
     }
     
     public int size() {
