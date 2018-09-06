@@ -33,11 +33,45 @@ public class LinkedList<T> {
     }
     
     public T remove(int index) {
-        return null;
+        if(index<0||index>=length) {
+           return null;
+        }
+        length--;
+        Node<T> cursor=first;
+        for(int count=0; count<index; count++) {
+            cursor = cursor.next;
+        }
+        if(cursor == first) {
+            first=first.next;
+            first.prev=null;
+            return cursor.value;
+        }
+        cursor.prev.next = cursor.next;
+        cursor.next.prev = cursor.prev;
+        
+        return cursor.value;
     }
     
     public void insert(int index, T obj) {
+        if(index<0||index>=length) {
+            return;
+         }
         
+        length++;
+        Node<T> node =new Node<>();
+        node.value =obj;
+        
+        Node<T> cursor=first;
+        for(int count=0; count<index; count++) {
+            cursor = cursor.next;
+        }
+        // 이전 노드가 있어야만 새 노드에 연결가능
+        if(cursor!=first) {
+            cursor.prev.next=node;
+            node.prev=cursor.prev;
+        }
+        node.next=cursor.next;
+        cursor.prev=node;
     }
             
     public int size() {
