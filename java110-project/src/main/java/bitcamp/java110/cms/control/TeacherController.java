@@ -1,16 +1,18 @@
 package bitcamp.java110.cms.control;
 import java.util.Scanner;
 
-import bitcamp.java110.cms.dao.StudentList;
-import bitcamp.java110.cms.dao.TeacherList;
-import bitcamp.java110.cms.domain.Student;
 import bitcamp.java110.cms.domain.Teacher;
+import util.ArrayList;
 
 public class TeacherController {
    
-    public static Scanner keyIn;
+    private  ArrayList teachers=new ArrayList();
+    public  Scanner keyIn;
+    public TeacherController(Scanner keyIn) {
+        this.keyIn = keyIn;
+    }
     
-    public static void serviceTeacherMenu() {
+    public void serviceTeacherMenu() {
         while(true) {
             System.out.println("강사관리>");
             String command = keyIn.nextLine();
@@ -30,7 +32,7 @@ public class TeacherController {
         }
     }
     
-    private static void inputTeachers() {
+    private void inputTeachers() {
         while(true) {
             Teacher t=new Teacher();
             
@@ -53,6 +55,8 @@ public class TeacherController {
             System.out.print("강의과목?(예: 자바,C,C++) ");
             t.setSubjects(keyIn.nextLine());
             
+            teachers.add(t);
+            
             System.out.print("계속하시겠습니까?(Y/n) ");
             String answer=keyIn.nextLine();
             if(answer.toLowerCase().equals("n"))
@@ -61,10 +65,10 @@ public class TeacherController {
         
     }
     
-    private static void printTeachers() {
+    private void printTeachers() {
         int count = 0;
-        for(int i=0; i<TeacherList.size();i++) {
-            Teacher t=TeacherList.get(i);
+        for(int i=0; i<teachers.size();i++) {
+            Teacher t=(Teacher)teachers.get(i);
             System.out.printf("%d, %s, %s, ,%s, %s, %d, [%s]\n"
                                 , count ++  
                                 , t.getName()
@@ -76,27 +80,27 @@ public class TeacherController {
         }
     }
     
-    private static void deleteTeacher() {
+    private void deleteTeacher() {
         System.out.print("삭제할 번호? ");
         int no=Integer.parseInt(keyIn.nextLine());
         
-        if(no<0||no>TeacherList.size()) {
+        if(no<0||no>teachers.size()) {
             System.out.println("해당 번호가 없습니다.");
             return;
         }
-        TeacherList.remove(no);
+        teachers.remove(no);
         System.out.println("삭제 하였습니다.");
     }
     
-    private static void detailTeacher() {
+    private void detailTeacher() {
         System.out.print("조회할 번호? ");
         int no=Integer.parseInt(keyIn.nextLine());
         
-        if(no < 0||no>=TeacherList.size()) {
+        if(no < 0||no>=teachers.size()) {
             System.out.println("잘못된 번호입니다.");
             return;
         }
-        Teacher teacher=TeacherList.get(no);
+        Teacher teacher=(Teacher)teachers.get(no);
         
         System.out.printf("이름 : %s\n",teacher.getName());
         System.out.printf("이메일 : %s\n",teacher.getEmail());
@@ -107,25 +111,25 @@ public class TeacherController {
 
     }
     
-    static {
+    {
         Teacher t=new Teacher();
         t.setName("a");
-        TeacherList.add(t);
+        teachers.add(t);
         
         t=new Teacher();
         t.setName("b");
-        TeacherList.add(t);
+        teachers.add(t);
         
         t=new Teacher();
         t.setName("c");
-        TeacherList.add(t);
+        teachers.add(t);
         
         t=new Teacher();
         t.setName("d");
-        TeacherList.add(t);
+        teachers.add(t);
         
         t=new Teacher();
         t.setName("e");
-        TeacherList.add(t);
+        teachers.add(t);
     } 
 }
