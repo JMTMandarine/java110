@@ -6,7 +6,7 @@ import util.ArrayList;
 
 public class TeacherController {
    
-    private  ArrayList teachers=new ArrayList();
+    private  ArrayList<Teacher> teachers=new ArrayList<>();
     public  Scanner keyIn;
     public TeacherController(Scanner keyIn) {
         this.keyIn = keyIn;
@@ -68,7 +68,7 @@ public class TeacherController {
     private void printTeachers() {
         int count = 0;
         for(int i=0; i<teachers.size();i++) {
-            Teacher t=(Teacher)teachers.get(i);
+            Teacher t=teachers.get(i);
             System.out.printf("%d, %s, %s, ,%s, %s, %d, [%s]\n"
                                 , count ++  
                                 , t.getName()
@@ -100,7 +100,7 @@ public class TeacherController {
             System.out.println("잘못된 번호입니다.");
             return;
         }
-        Teacher teacher=(Teacher)teachers.get(no);
+        Teacher teacher=teachers.get(no);
         
         System.out.printf("이름 : %s\n",teacher.getName());
         System.out.printf("이메일 : %s\n",teacher.getEmail());

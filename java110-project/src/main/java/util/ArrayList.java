@@ -1,17 +1,18 @@
 package util;
 
-public class ArrayList {
+public class ArrayList<T> {
     
     //개별적으로 관리해야할 값이라면 인스턴스변수로 선언
-    Object[] list=new Object[100];
-    int index = 0;
+    private Object[] list=new Object[100];
+    private int index = 0;
     
-    public void add(Object obj) {
+    public void add(T obj) {
             
             if(index == list.length) {
                 increaseStorage();
             }
             list[index++] = obj;
+            
     }
     
     private void increaseStorage() {
@@ -38,12 +39,13 @@ public class ArrayList {
         return this.index;
     }
     
-    public Object get(int no) {
+    @SuppressWarnings("unchecked")
+    public T get(int no) {
         if(no<0||no>=index) {
             System.out.println("잘못된 번호입니다.");
             return null;
         }
-        return list[no];
+        return (T)list[no];
     }
     
     
