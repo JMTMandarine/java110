@@ -1,19 +1,24 @@
-import java.lang.reflect.Method;
+package bitcamp.java110.cms;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import bitcamp.java110.cms.annotaion.RequestMapping;
 import bitcamp.java110.cms.context.ApplicationContext;
 import bitcamp.java110.cms.context.RequestMappingHandlerMapping;
 import bitcamp.java110.cms.context.RequestMappingHandlerMapping.RequestMappingHandler;
+import bitcamp.java110.cms.domain.Student;
 
 
 public class App {
     
     static Scanner keyIn=new Scanner(System.in);
     
+    public static ArrayList<Student> students=new ArrayList<>();
+    
     public static void main(String[] args) throws Exception {
         
         ApplicationContext iocContainer = new ApplicationContext("bitcamp.java110.cms.control");
+        
+        // => 저장소에 보관된 객체 중에서 List를 요구하는 
         
         RequestMappingHandlerMapping requestHandlerMap = new RequestMappingHandlerMapping();
         
