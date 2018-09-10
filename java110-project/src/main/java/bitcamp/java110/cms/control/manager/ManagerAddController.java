@@ -6,7 +6,6 @@ import bitcamp.java110.cms.App;
 import bitcamp.java110.cms.annotaion.Component;
 import bitcamp.java110.cms.annotaion.RequestMapping;
 import bitcamp.java110.cms.domain.Manager;
-import bitcamp.java110.cms.domain.Student;
 
 @Component
 public class ManagerAddController {
@@ -32,7 +31,7 @@ public class ManagerAddController {
             System.out.print("위치? ");
             m.setPosition(keyIn.nextLine());
             
-            App.managers.add(m);
+            App.managerDao.insert(m);
             
             System.out.print("계속하시겠습니까?(Y/n) ");
             String answer=keyIn.nextLine();
@@ -45,23 +44,28 @@ public class ManagerAddController {
     {
         Manager m=new Manager();
         m.setName("a");
-        App.managers.add(m);
+        m.setEmail("aa@naver.com");
+        App.managerDao.insert(m);
         
         m=new Manager();
         m.setName("b");
-        App.managers.add(m);
+        m.setEmail("bb@naver.com");
+        App.managerDao.insert(m);
         
         m=new Manager();
         m.setName("c");
-        App.managers.add(m);
+        m.setEmail("cc@naver.com");
+        App.managerDao.insert(m);
         
         m=new Manager();
         m.setName("d");
-        App.managers.add(m);
+        m.setEmail("dd@naver.com");
+        App.managerDao.insert(m);
         
         m=new Manager();
         m.setName("e");
-        App.managers.add(m);
+        m.setEmail("ee@naver.com");
+        App.managerDao.insert(m);
     }
     
     

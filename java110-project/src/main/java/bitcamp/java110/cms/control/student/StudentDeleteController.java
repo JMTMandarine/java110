@@ -19,7 +19,7 @@ public class StudentDeleteController {
             System.out.println("삭제하였습니다.");
         }else {
             System.out.println("이메일에 해당하는 학생이 없습니다.");
-        }
+        };
         
     }
 }

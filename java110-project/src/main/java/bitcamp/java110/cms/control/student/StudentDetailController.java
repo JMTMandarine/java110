@@ -19,7 +19,7 @@ public class StudentDetailController {
         Student student = App.studentDao.findByEmail(email);
         
         if(student == null) {
-            System.out.println("해당 이ㅔㅁ");
+            System.out.println("해당 이메일이 존재하지않습니다.");
             return;
         }else{
         

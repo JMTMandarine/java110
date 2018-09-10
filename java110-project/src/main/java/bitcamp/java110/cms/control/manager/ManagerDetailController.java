@@ -12,21 +12,21 @@ public class ManagerDetailController {
 
     @RequestMapping("manager/detail")
     public void detail(Scanner keyIn) {
-        System.out.print("조회할 번호? ");
-        int no=Integer.parseInt(keyIn.nextLine());
-        
-        //삭제s
-        if(no < 0||no>=App.managers.size()) {
-            System.out.println("잘못된 번호입니다.");
-            return;
-        }
-        Manager manager=App.managers.get(no);
-        
+        System.out.print("조회할 이메일은? ");
+        String email=keyIn.nextLine();
+        Manager manager=App.managerDao.findByEmail(email);
+        if(manager==null)
+        {
+            System.out.println("해당메일이 존재하지않습니다.");
+        }else {
+            
         System.out.printf("이름 : %s\n",manager.getName());
         System.out.printf("이메일 : %s\n",manager.getEmail());
         System.out.printf("암호 : %s\n",manager.getPassword());
         System.out.printf("최종학력 : %s\n",manager.getPosition());
         System.out.printf("전화 : %s\n",manager.getTel());
+        
+        }
     }
     
     

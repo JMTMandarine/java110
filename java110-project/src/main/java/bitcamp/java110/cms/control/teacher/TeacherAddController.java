@@ -17,7 +17,6 @@ public class TeacherAddController {
             
             System.out.print("이름? ");
             t.setName(keyIn.nextLine());
-            /*members[index].setName(keyIn.nextLine());*/
             
             System.out.print("이메일? ");
             t.setEmail(keyIn.nextLine());
@@ -34,7 +33,7 @@ public class TeacherAddController {
             System.out.print("강의과목?(예: 자바,C,C++) ");
             t.setSubjects(keyIn.nextLine());
             
-            App.teachers.add(t);
+            App.teacherDao.insert(t);
             
             System.out.print("계속하시겠습니까?(Y/n) ");
             String answer=keyIn.nextLine();
@@ -47,22 +46,28 @@ public class TeacherAddController {
     {
         Teacher t=new Teacher();
         t.setName("a");
-        App.teachers.add(t);
+        t.setEmail("aa@naver.com");
+        App.teacherDao.insert(t);
         
         t=new Teacher();
         t.setName("b");
-        App.teachers.add(t);
+        t.setEmail("bb@naver.com");
+        
+        App.teacherDao.insert(t);
         
         t=new Teacher();
         t.setName("c");
-        App.teachers.add(t);
+        t.setEmail("cc@naver.com");
+        App.teacherDao.insert(t);
         
         t=new Teacher();
         t.setName("d");
-        App.teachers.add(t);
+        t.setEmail("dd@naver.com");
+        App.teacherDao.insert(t);
         
         t=new Teacher();
         t.setName("e");
-        App.teachers.add(t);
+        t.setEmail("ee@naver.com");
+        App.teacherDao.insert(t);
     }
 }
