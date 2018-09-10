@@ -14,14 +14,14 @@ public class StudentDetailController {
     
     @RequestMapping("student/detail")
     public void detail(Scanner keyIn) {
-        System.out.print("조회할 번호? ");
-        int no=Integer.parseInt(keyIn.nextLine());
+        System.out.print("조회할 학생의 이메일? ");
+        String email=keyIn.nextLine();
+        Student student = App.studentDao.findByEmail(email);
         
-        if(no < 0||no>=App.students.size()) {
-            System.out.println("잘못된 번호입니다.");
+        if(student == null) {
+            System.out.println("해당 이ㅔㅁ");
             return;
-        }
-        Student student=App.students.get(no);
+        }else{
         
         System.out.printf("이름 : %s\n",student.getName());
         System.out.printf("이메일 : %s\n",student.getEmail());
@@ -29,5 +29,7 @@ public class StudentDetailController {
         System.out.printf("최종학력 : %s\n",student.getSchool());
         System.out.printf("전화 : %s\n",student.getTel());
         System.out.printf("제직여부 : %b\n",student.isWorking());
+        }
     }
+        
 }

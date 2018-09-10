@@ -5,7 +5,6 @@ import java.util.Scanner;
 import bitcamp.java110.cms.App;
 import bitcamp.java110.cms.annotaion.Component;
 import bitcamp.java110.cms.annotaion.RequestMapping;
-import bitcamp.java110.cms.domain.Student;
 import bitcamp.java110.cms.domain.Teacher;
 
 @Component
