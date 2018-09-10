@@ -8,7 +8,7 @@ import bitcamp.java110.cms.annotaion.RequestMapping;
 import bitcamp.java110.cms.domain.Manager;
 
 
-@Component("manager")
+@Component
 public class ManagerController {
     
     
@@ -18,7 +18,7 @@ public class ManagerController {
         init();
     }
     
-    @RequestMapping
+    @RequestMapping("manager")
     public void manager(Scanner keyIn) {
         while(true) {
             System.out.println("매니저관리>");

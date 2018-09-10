@@ -2,8 +2,8 @@ package bitcamp.java110.cms.context;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.apache.ibatis.io.Resources;
 
@@ -31,6 +31,14 @@ public class ApplicationContext {
     public Object getBean(String name) {
         // objPool에 보관된 객체를 이름으로 찾아 리턴함.
         return objPool.get(name);
+    }
+    
+    //키값을 배열에 넣음
+    public String[] getBeanDefinintionNames() {
+        Set<String> keySet = objPool.keySet();
+        String[] names =new String[keySet.size()];
+        keySet.toArray(names);
+        return names;
     }
     
     private void findClass(File path, String packagePath) throws Exception {
@@ -62,14 +70,22 @@ public class ApplicationContext {
                     Object name=field.get(instance);*/
                     
                     // 클래스에서 Component 에노테이션을 추출한다.
-                    Component anoo= clazz.getAnnotation(Component.class);
+                    Component anno= clazz.getAnnotation(Component.class);
                     
 //                    System.out.println(clazz.getName()+"==>"+name);
                     
                     // "name" 필드의 값으로 인스턴스를 objPool에 저장한다
                     
+                    //=> Component 에노테이션에 value 값이 있으면 그 값으로 객체를 저장
+                    //   없으면, 클래스 이름으로 객체를 저장.
+                    if(anno.value().length()>0) {
+                        objPool.put(anno.value(), instance);
+                    }else {
+                        objPool.put(clazz.getName(), instance);
+                    }
+                    
                     // => Component 에노테이션 value값으로 인서턴스를 objPool에 저장한다.
-                    objPool.put(anoo.value(), instance);
+                    objPool.put(anno.value(), instance);
                     
                 }catch(Exception e) {
                     e.printStackTrace();
