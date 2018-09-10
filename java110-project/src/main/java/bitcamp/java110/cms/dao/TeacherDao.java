@@ -9,10 +9,10 @@ public class TeacherDao {
     private List<Teacher> list=new ArrayList<>();
     
     
-    public int insert (Teacher teacher) {
+    public int insert(Teacher teacher) {
         for(Teacher item: list) {
             if(item.getEmail().equals(teacher.getEmail())){
-                return 0;
+                return 0; // 걍 멈추지않고 값을준다? 에헤
             }
         }
         list.add(teacher);
