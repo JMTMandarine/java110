@@ -14,6 +14,8 @@ public class TeacherListController {
     
     @RequestMapping("teacher/list")
     public void list(Scanner keyIn) {
+        
+        
         List<Teacher> list=App.teacherDao.findAll();
         for(Teacher t : list) {
             System.out.printf("%s, %s, %s, %s, %d, [%s]\n"
@@ -24,6 +26,8 @@ public class TeacherListController {
                                 , t.getPay()
                                 , t.getSubjects());
         }
+        
+
     }
     
     
