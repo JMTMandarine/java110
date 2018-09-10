@@ -3,11 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import bitcamp.java110.cms.annotaion.Component;
 import bitcamp.java110.cms.domain.Student;
 
+@Component("1")
 public class StudentController implements Controller{
     
-    public String name="1";
     private  List<Student> students=new ArrayList<>();
     
     public StudentController() {
