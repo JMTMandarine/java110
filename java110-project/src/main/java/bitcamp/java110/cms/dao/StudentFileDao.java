@@ -20,7 +20,7 @@ public class StudentFileDao implements StudentDao{
         try (BufferedReader  in=new BufferedReader(new FileReader(dataFile))){
             
             while(true) {
-            String line=in.readLine();
+            String line=in.readLine(); //aa@naver.com,a,a,a,111-111,true
             if(line==null)
                 break;
             String[] values=line.split(",");
