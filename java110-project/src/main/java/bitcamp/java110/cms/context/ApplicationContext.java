@@ -2,7 +2,6 @@ package bitcamp.java110.cms.context;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.Set;
 
 import org.apache.ibatis.io.Resources;
 
-import bitcamp.java110.cms.annotaion.Autowired;
 import bitcamp.java110.cms.annotaion.Component;
 
 public class ApplicationContext {
@@ -34,9 +32,11 @@ public class ApplicationContext {
         // 클래스에 대해 인스턴스를 생성한 후에 
          createInstance();
          
-         //의존 객체 주입
-         //objPool에 보관된 객체를 꺼내 @Autowired가 붙은 셋터를 찾아 호출함
-         injectDependency();
+         //injectDepenency() 메서드를 외부 클래스로 분리한 다음에
+         // 그 객체를 실행한다.
+         AutowiredAnnotationBeanPostProcessor processor=new AutowiredAnnotationBeanPostProcessor();
+         processor.postProcess(this);
+         
     }
     
     
@@ -120,29 +120,20 @@ public class ApplicationContext {
         }
     }
     
-    private void injectDependency() {
-        // objPool에 보관된 객체 목록을 꺼낸다.
-        Collection<Object> objList = objPool.values();
-        
+   /* private void callBeanPostProcessor() {
+        //objPool에 보관된 객체 중에서 BeanPostProcessor 규칙을 준수하는 객체를 찾음
+        Collection<Object> objList= objPool.values();
         for(Object obj : objList) {
-            Method[] methods = obj.getClass().getDeclaredMethods();
-            for(Method m:methods) {
-                if(!m.isAnnotationPresent(Autowired.class)) continue;
+            if(!BeanPostProcessor.class.isInstance(obj)) continue; //class?
+            
+            BeanPostProcessor processor= (BeanPostProcessor)obj;
+            processor.postProcess(this);
+        }
+    }*/
+}
 
-                //setter 메서드를 호출하기 위해 파라미터 값을 준비한다.
-                Class<?> paramType=m.getParameterTypes()[0];
-                
-                //그 파라미터 타입과 일치하는 객체가 objPool에 있는지 꺼낸다.
-                Object dependency=getBean(paramType);
-                if(dependency == null) continue;
-                
-                try {
-                    m.invoke(obj, dependency);
-                    System.out.printf("%s() 호출됨\n",m.getName());
-                } catch (Exception e) {}
-            }
-        } 
-    }
+
+
     
 /*  재귀설명  
  *  public static void main(String[] args) {
@@ -158,4 +149,3 @@ public class ApplicationContext {
             return a+sigma(a-1);
         }
     }*/
-}
