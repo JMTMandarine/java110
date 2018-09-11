@@ -2,14 +2,22 @@ package bitcamp.java110.cms.control.manager;
 
 import java.util.Scanner;
 
-import bitcamp.java110.cms.App;
+import bitcamp.java110.cms.annotaion.Autowired;
 import bitcamp.java110.cms.annotaion.Component;
 import bitcamp.java110.cms.annotaion.RequestMapping;
+import bitcamp.java110.cms.dao.ManagerDao;
 import bitcamp.java110.cms.domain.Manager;
 
 @Component
 public class ManagerAddController {
 
+    ManagerDao managerDao;
+    
+    @Autowired
+    public void setManagerDao(ManagerDao managerDao) {
+        this.managerDao=managerDao;
+    }
+    
     @RequestMapping("manager/add")
     public void add(Scanner keyIn) {
         while(true) {
@@ -31,7 +39,7 @@ public class ManagerAddController {
             System.out.print("위치? ");
             m.setPosition(keyIn.nextLine());
             
-            App.managerDao.insert(m);
+            managerDao.insert(m);
             
             System.out.print("계속하시겠습니까?(Y/n) ");
             String answer=keyIn.nextLine();
@@ -40,33 +48,5 @@ public class ManagerAddController {
         }
         
     }
-    
-    {
-        Manager m=new Manager();
-        m.setName("a");
-        m.setEmail("aa@naver.com");
-        App.managerDao.insert(m);
-        
-        m=new Manager();
-        m.setName("b");
-        m.setEmail("bb@naver.com");
-        App.managerDao.insert(m);
-        
-        m=new Manager();
-        m.setName("c");
-        m.setEmail("cc@naver.com");
-        App.managerDao.insert(m);
-        
-        m=new Manager();
-        m.setName("d");
-        m.setEmail("dd@naver.com");
-        App.managerDao.insert(m);
-        
-        m=new Manager();
-        m.setName("e");
-        m.setEmail("ee@naver.com");
-        App.managerDao.insert(m);
-    }
-    
     
 }

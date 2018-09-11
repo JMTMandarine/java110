@@ -2,15 +2,21 @@ package bitcamp.java110.cms.context;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.io.Resources;
 
+import bitcamp.java110.cms.annotaion.Autowired;
 import bitcamp.java110.cms.annotaion.Component;
 
 public class ApplicationContext {
     HashMap<String, Object> objPool=new HashMap<>();
+    List<Class<?>> classes=new ArrayList<>();
     
     public ApplicationContext(String packageName) throws Exception {
         // 패키지이름을 파일경로로 바꿈
@@ -20,17 +26,34 @@ public class ApplicationContext {
         File file=Resources.getResourceAsFile(path);
         
         //패키지 폴더에 들어있는 클래스를 찾아 인스턴스를 생성하여 objPool에 저장
-        findClass(file, path);
+        
+         findClass(file, path); //패키지 폴더에 들어 있는 클래스를 찾아 클래스를 로딩한 후 그 목록에 저장. 
         
         // 1) 인스턴스 생성
-        // 해당 패키지에 있는 클래스를 찾아서 인스터를 생성한 후에
-        // objPool에 보관한다.
+        // 로딩된 클래스 목록을 @Component가 붙음
+        // 클래스에 대해 인스턴스를 생성한 후에 
+         createInstance();
+         
+         //의존 객체 주입
+         //objPool에 보관된 객체를 꺼내 @Autowired가 붙은 셋터를 찾아 호출함
+         injectDependency();
     }
     
     
     public Object getBean(String name) {
         // objPool에 보관된 객체를 이름으로 찾아 리턴함.
         return objPool.get(name);
+    }
+    
+    //객채의 타입으로 objPool에 보관된 객체를 찾아 리턴
+    public Object getBean(Class<?> type) {
+        Collection<Object> objList = objPool.values();
+        for(Object obj : objList) {
+            if(type.isInstance(obj)) {
+                return obj;
+            }
+        }
+        return null;
     }
     
     //키값을 배열에 넣음
@@ -49,50 +72,76 @@ public class ApplicationContext {
             }else {
                 String className=(packagePath+"/"+file.getName()).replace("/", ".").replace(".class","");
                 
-                //1)클래스 이름을 가지고 .class 파일을 찾아 메모리에 로딩한다.
-                Class<?> clazz=Class.forName(className);
-                
-                //=> 인터페이스인 경우 무시한다.
-                if(clazz.isInterface()) continue ;
-                
                 try {
-                    //2)로딩된 클래스 정보를 가지고 인스턴스를 생성한다.
-                    //=>먼저 해당 클래스의 생성자 정보를 얻는다.
-                    Constructor<?> constructor=clazz.getConstructor();
+                    //1)클래스 이름을 가지고 .class 파일을 찾아 메모리에 로딩한다.
+                    Class<?> clazz=Class.forName(className);
                     
-                    // 생성자를 가지고 인스턴스를 생성한다.
-                    Object instance = constructor.newInstance();
+                    //로딩한 클래스 정보를 목록에 보관
+                    classes.add(clazz);
                     
-/*                    // 이름으로 인스턴스의 필드를 찾는다.
-                    Field field =clazz.getField("name");
-                    
-                    // "name" 필드의 값을 꺼낸다.
-                    Object name=field.get(instance);*/
-                    
-                    // 클래스에서 Component 에노테이션을 추출한다.
-                    Component anno= clazz.getAnnotation(Component.class);
-                    
-//                    System.out.println(clazz.getName()+"==>"+name);
-                    
-                    // "name" 필드의 값으로 인스턴스를 objPool에 저장한다
-                    
-                    //=> Component 에노테이션에 value 값이 있으면 그 값으로 객체를 저장
-                    //   없으면, 클래스 이름으로 객체를 저장.
-                    if(anno.value().length()>0) {
-                        objPool.put(anno.value(), instance);
-                    }else {
-                        objPool.put(clazz.getName(), instance);
-                    }
-                    
-                    // => Component 에노테이션 value값으로 인서턴스를 objPool에 저장한다.
+                } catch (Exception e) {}
+            }
+            
+            
+        }
+        
+    }
+    private void createInstance() {
+        for(Class<?> clazz: classes) {
+            // 인터페이스인 경우 무시
+            if(clazz.isInterface()) continue ;
+            
+            // 클래스에서 
+            Component anno= clazz.getAnnotation(Component.class);
+            
+            // 애노테이션이 붙지않은 클래스는 객체를 생성하지 않음.
+            if(anno==null) continue;
+            try {
+                //2)로딩된 클래스 정보를 가지고 인스턴스를 생성한다.
+                //=>먼저 해당 클래스의 생성자 정보를 얻는다.
+                Constructor<?> constructor=clazz.getConstructor();
+                
+                // 생성자를 가지고 인스턴스를 생성한다.
+                Object instance = constructor.newInstance();
+                
+
+                if(anno.value().length()>0) {
                     objPool.put(anno.value(), instance);
-                    
-                }catch(Exception e) {
-                    e.printStackTrace();
-                    System.out.printf("%s 클래는 기본 생성자가 없습니다.\n",clazz.getName());
+                }else {
+                    objPool.put(clazz.getName(), instance);
                 }
+                
+                // => Component 에노테이션 value값으로 인서턴스를 objPool에 저장한다.
+                
+            }catch(Exception e) {
+                e.printStackTrace();
+                System.out.printf("%s 클래는 기본 생성자가 없습니다.\n",clazz.getName());
             }
         }
+    }
+    
+    private void injectDependency() {
+        // objPool에 보관된 객체 목록을 꺼낸다.
+        Collection<Object> objList = objPool.values();
+        
+        for(Object obj : objList) {
+            Method[] methods = obj.getClass().getDeclaredMethods();
+            for(Method m:methods) {
+                if(!m.isAnnotationPresent(Autowired.class)) continue;
+
+                //setter 메서드를 호출하기 위해 파라미터 값을 준비한다.
+                Class<?> paramType=m.getParameterTypes()[0];
+                
+                //그 파라미터 타입과 일치하는 객체가 objPool에 있는지 꺼낸다.
+                Object dependency=getBean(paramType);
+                if(dependency == null) continue;
+                
+                try {
+                    m.invoke(obj, dependency);
+                    System.out.printf("%s() 호출됨\n",m.getName());
+                } catch (Exception e) {}
+            }
+        } 
     }
     
 /*  재귀설명  

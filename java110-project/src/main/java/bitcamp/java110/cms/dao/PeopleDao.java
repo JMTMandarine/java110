@@ -8,7 +8,6 @@ import bitcamp.java110.cms.domain.People;
 public class PeopleDao {
     List<People> list=new ArrayList<>();
     
-    
     public int insert(People people) {
         for(People item :list)
         {
