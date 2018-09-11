@@ -4,8 +4,10 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 
 import bitcamp.java110.cms.annotaion.Autowired;
+import bitcamp.java110.cms.annotaion.Component;
 
-public class AutowiredAnnotationBeanPostProcessor {
+@Component //객채를 생성안해도 만들어짐 (찾을때는 인터페이스로 찾음)
+public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcessor{
     
     ApplicationContext beanContainer;
     

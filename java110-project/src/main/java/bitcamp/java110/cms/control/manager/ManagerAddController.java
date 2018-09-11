@@ -8,17 +8,17 @@ import bitcamp.java110.cms.annotaion.RequestMapping;
 import bitcamp.java110.cms.dao.ManagerDao;
 import bitcamp.java110.cms.domain.Manager;
 
-@Component
+@Component //
 public class ManagerAddController {
 
     ManagerDao managerDao;
     
-    @Autowired
+    @Autowired //얘는뭐지? 의존객체?
     public void setManagerDao(ManagerDao managerDao) {
         this.managerDao=managerDao;
     }
     
-    @RequestMapping("manager/add")
+    @RequestMapping("manager/add") //
     public void add(Scanner keyIn) {
         while(true) {
             Manager m=new Manager();

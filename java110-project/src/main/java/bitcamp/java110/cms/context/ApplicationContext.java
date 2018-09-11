@@ -32,10 +32,10 @@ public class ApplicationContext {
         // 클래스에 대해 인스턴스를 생성한 후에 
          createInstance();
          
-         //injectDepenency() 메서드를 외부 클래스로 분리한 다음에
-         // 그 객체를 실행한다.
-         AutowiredAnnotationBeanPostProcessor processor=new AutowiredAnnotationBeanPostProcessor();
-         processor.postProcess(this);
+         //객채 생성후에 실행할 작업이 있다면
+         //BeanPostProcessor 구현체를 찾아 실행
+         callBeanPostProcessor();
+         
          
     }
     
@@ -120,7 +120,7 @@ public class ApplicationContext {
         }
     }
     
-   /* private void callBeanPostProcessor() {
+    private void callBeanPostProcessor() {
         //objPool에 보관된 객체 중에서 BeanPostProcessor 규칙을 준수하는 객체를 찾음
         Collection<Object> objList= objPool.values();
         for(Object obj : objList) {
@@ -129,7 +129,7 @@ public class ApplicationContext {
             BeanPostProcessor processor= (BeanPostProcessor)obj;
             processor.postProcess(this);
         }
-    }*/
+    }
 }
 
 
