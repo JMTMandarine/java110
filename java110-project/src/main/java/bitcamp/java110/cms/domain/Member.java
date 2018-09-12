@@ -7,7 +7,9 @@ public class Member implements Serializable{
     private static final long serialVersionUID = 1L;
         protected String name;
         protected String email;
-        protected String password;
+        
+        //transient를 선언할 경우 Serialize(직렬화)대상에서 제외함 
+        protected transient String password;
         
         //인스턴스의 메모리를 다루는 operator=setter/getter=accessor=property=message
         public String getName() {

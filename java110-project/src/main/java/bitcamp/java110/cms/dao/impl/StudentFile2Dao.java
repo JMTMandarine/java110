@@ -1,57 +1,52 @@
 package bitcamp.java110.cms.dao.impl;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import bitcamp.java110.cms.annotaion.Component;
 import bitcamp.java110.cms.dao.StudentDao;
 import bitcamp.java110.cms.domain.Student;
 
-public class StudentFileDao implements StudentDao{
+@Component
+public class StudentFile2Dao implements StudentDao{
     private List<Student> list=new ArrayList<>();
+    static String defaultFilename="data/student2.dat";
+    String filename;
     
-    public StudentFileDao () {
-        File dataFile=new File("data/student.dat");
-        try (BufferedReader  in=new BufferedReader(new FileReader(dataFile))){
+    @SuppressWarnings("unchecked")
+    public StudentFile2Dao (String filename) {
+        this.filename=filename;
+        File dataFile=new File(filename);
+        try (FileInputStream in2=new FileInputStream(dataFile);
+             BufferedInputStream in1=new BufferedInputStream(in2);
+             ObjectInputStream in=new ObjectInputStream(in1);  ){
             
-            while(true) {
-            String line=in.readLine(); //aa@naver.com,a,a,a,111-111,true
-            if(line==null)
-                break;
-            String[] values=line.split(",");
-            Student s = new Student();
-            s.setEmail(values[0]);
-            s.setName(values[1]);
-            s.setPassword(values[2]);
-            s.setSchool(values[3]);
-            s.setTel(values[4]);
-            s.setWorking(Boolean.parseBoolean(values[5]));
             
-            list.add(s);
-            }
+            list=(List<Student>)in.readObject();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
         
     }
+    public StudentFile2Dao () {
+        this(defaultFilename);
+    }
     
     private void save () {
-        File dataFile=new File("data/student.dat");
-        try (BufferedWriter out=new BufferedWriter(new FileWriter(dataFile))){
+        File dataFile=new File(filename);
+        try (FileOutputStream out2=new FileOutputStream(dataFile);
+             BufferedOutputStream out1=new BufferedOutputStream(out2);
+             ObjectOutputStream out=new ObjectOutputStream(out1)){
             
-            for(Student s : list){
-                out.write(String.format("%s,%s,%s,%s,%s,%b\n"
-                        ,s.getEmail()
-                        ,s.getName()
-                        ,s.getPassword()
-                        ,s.getSchool()
-                        ,s.getTel()
-                        ,s.isWorking()));
-            }
+            out.writeObject(list);
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();
