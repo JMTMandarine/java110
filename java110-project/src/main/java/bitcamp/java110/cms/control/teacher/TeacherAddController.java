@@ -19,7 +19,7 @@ public class TeacherAddController {
     }
 
     @RequestMapping("teacher/add")
-    public void add(Scanner keyIn) {
+    public void add(Scanner keyIn)  {
         while(true) {
             Teacher t=new Teacher();
             
@@ -40,7 +40,9 @@ public class TeacherAddController {
             
             System.out.print("강의과목?(예: 자바,C,C++) ");
             t.setSubjects(keyIn.nextLine());
+            
             teacherDao.insert(t);
+            
             System.out.print("계속하시겠습니까?(Y/n) ");
             String answer=keyIn.nextLine();
             if(answer.toLowerCase().equals("n"))

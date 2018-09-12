@@ -9,8 +9,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import bitcamp.java110.cms.annotaion.Component;
+import bitcamp.java110.cms.dao.DuplicationDaoException;
 import bitcamp.java110.cms.dao.ManagerDao;
+import bitcamp.java110.cms.dao.MandatoryValueDaoException;
 import bitcamp.java110.cms.domain.Manager;
 
 @Component
@@ -65,12 +68,13 @@ public class ManagerFile2Dao implements ManagerDao{
         if(manager.getName().length()==0||
            manager.getEmail().length()==0||
            manager.getPassword().length()==0) {
-            return -1; //필수입력 값이 없을경우 -1값 리턴
+            // 호출자에게 예외 정보를 만들어 던짐
+            throw new MandatoryValueDaoException();
         }
         for(Manager item: list) {
             if(item.getEmail().equals(manager.getEmail())){
-                // 같은 이메일의 매니저가 있을 경우 -2값 리턴
-                return -2;
+                // 호출자에게 예외 정보를 만들어 던짐
+                throw new DuplicationDaoException();
             }
         }
         list.add(manager);

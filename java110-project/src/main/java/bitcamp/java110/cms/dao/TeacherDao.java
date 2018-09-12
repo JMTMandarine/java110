@@ -4,9 +4,9 @@ import java.util.List;
 
 import bitcamp.java110.cms.domain.Teacher;
 
-public interface TeacherDao {
+public interface TeacherDao  {
     
-    int insert(Teacher teacher);
+    int insert(Teacher teacher) throws MandatoryValueDaoException, DuplicationDaoException;
     
     public List<Teacher> findAll();
     
