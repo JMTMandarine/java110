@@ -61,9 +61,16 @@ public class ManagerFile2Dao implements ManagerDao{
     }
     
     public int insert(Manager manager) {
+        //예외처리 문법이 없던 시절에는 리턴값으로 예외 상황을 호출자에게 알렸다.
+        if(manager.getName().length()==0||
+           manager.getEmail().length()==0||
+           manager.getPassword().length()==0) {
+            return -1; //필수입력 값이 없을경우 -1값 리턴
+        }
         for(Manager item: list) {
             if(item.getEmail().equals(manager.getEmail())){
-                return 0;
+                // 같은 이메일의 매니저가 있을 경우 -2값 리턴
+                return -2;
             }
         }
         list.add(manager);
