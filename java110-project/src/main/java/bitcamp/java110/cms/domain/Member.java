@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class Member implements Serializable{
         
     private static final long serialVersionUID = 1L;
+        protected int no;
         protected String name;
         protected String email;
-        
         //transient를 선언할 경우 Serialize(직렬화)대상에서 제외함 
-        protected transient String password;
+        protected String password;
         
         //인스턴스의 메모리를 다루는 operator=setter/getter=accessor=property=message
         public String getName() {
@@ -30,5 +30,11 @@ public class Member implements Serializable{
         public void setPassword(String password) {
             this.password = password;
         }
-    
+        public int getNo() {
+            return no;
+        }
+        public void setNo(int no) {
+            this.no = no;
+        }
+        
 }

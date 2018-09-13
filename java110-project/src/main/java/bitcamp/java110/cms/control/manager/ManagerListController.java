@@ -23,7 +23,8 @@ public class ManagerListController {
     public void list(Scanner keyIn) {
         List<Manager> list=managerDao.findAll();
         for(Manager m: list) {
-            System.out.printf("%s,%s,%s,%s,%s\n"
+            System.out.printf("%d,%s,%s,%s,%s,%s\n"
+                                , m.getNo()
                                 , m.getName()
                                 , m.getEmail()
                                 , m.getPassword()
