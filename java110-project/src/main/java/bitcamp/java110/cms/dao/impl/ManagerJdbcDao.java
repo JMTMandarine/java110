@@ -19,6 +19,7 @@ public class ManagerJdbcDao implements ManagerDao{
     public int insert(Manager manager) {
         Connection con=null;
         Statement stmt=null;
+        
         try {
             
             
@@ -27,7 +28,6 @@ public class ManagerJdbcDao implements ManagerDao{
             
             //트랜잭션 처리(기본적으로  자동커밋을 false값으로 바꾸어줌)
             con.setAutoCommit(false);
-            
             
             stmt = con.createStatement();
             String sql="     insert into p1_memb(name,email,pwd,tel,cdt)"
