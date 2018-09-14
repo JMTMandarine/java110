@@ -1,7 +1,8 @@
 package bitcamp.java110.cms.domain;
 
-public class Teacher extends Member{
+public class Teacher extends Member {
     private static final long serialVersionUID = 1L;
+    
     protected String tel;
     protected int pay;
     protected String subjects;
@@ -24,5 +25,4 @@ public class Teacher extends Member{
     public void setSubjects(String subjects) {
         this.subjects = subjects;
     }
-    
 }

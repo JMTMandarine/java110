@@ -6,13 +6,14 @@ import java.util.List;
 import bitcamp.java110.cms.dao.StudentDao;
 import bitcamp.java110.cms.domain.Student;
 
+//@Component
 public class StudentListDao implements StudentDao {
-    private List<Student> list=new ArrayList<>();
     
+    private List<Student> list = new ArrayList<>();
     
-    public int insert (Student student) {
-        for(Student item: list) {
-            if(item.getEmail().equals(student.getEmail())){
+    public int insert(Student student) {
+        for (Student item : list) {
+            if (item.getEmail().equals(student.getEmail())) {
                 return 0;
             }
         }
@@ -25,8 +26,8 @@ public class StudentListDao implements StudentDao {
     }
     
     public Student findByEmail(String email) {
-        for(Student item: list) {
-            if(item.getEmail().equals(email)){
+        for (Student item : list) {
+            if (item.getEmail().equals(email)) {
                 return item;
             }
         }
@@ -34,13 +35,20 @@ public class StudentListDao implements StudentDao {
     }
     
     public int delete(String email) {
-        for(Student item: list) {
-            if(item.getEmail().equals(email)){
+        for (Student item : list) {
+            if (item.getEmail().equals(email)) {
                 list.remove(item);
                 return 1;
             }
         }
         return 0;
     }
-
 }
+
+
+
+
+
+
+
+
