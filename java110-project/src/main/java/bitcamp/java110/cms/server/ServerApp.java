@@ -3,7 +3,7 @@ package bitcamp.java110.cms.server;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -53,7 +53,7 @@ public class ServerApp {
         while(true) {
             try(
                 Socket socket=serverSocket.accept();
-                PrintStream out=new PrintStream(new BufferedOutputStream(socket.getOutputStream()));
+                PrintWriter out=new PrintWriter(new BufferedOutputStream(socket.getOutputStream()));
                 BufferedReader in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ){
                 System.out.println(in.readLine());
@@ -67,8 +67,15 @@ public class ServerApp {
                         out.flush();
                         break;
                     }
+                    
+                    // 요청 객체 준비 
+                    Request request = new Request(requestLine);
+                    // 응답 객체 준비
+                    Response response = new Response(out);
+                    
                     RequestMappingHandler mapping = 
-                            requestHandlerMap.getMapping(requestLine);
+                            requestHandlerMap.getMapping(request.getAppPath());
+                        
                     if (mapping == null) {
                         out.println("해당 메뉴가 없습니다.");
                         out.println();
@@ -76,7 +83,8 @@ public class ServerApp {
                         continue;
                     }
                     try {
-                        mapping.getMethod().invoke(mapping.getInstance(), out);
+                        // 요청 핸들러 호출
+                        mapping.getMethod().invoke(mapping.getInstance(), request, response);
                         
                     } catch (Exception e) {
                         e.printStackTrace();
