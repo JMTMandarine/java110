@@ -52,6 +52,7 @@ public class ServerApp {
 
         while(true) {
             Socket socket = serverSocket.accept();
+            System.out.println("오~호라~! 크라이언트가 연결되었다!");
             RequestWorker worker = new RequestWorker(socket);
             new Thread(worker).start(); // 여기서만 쓰기때문에 변수를 따로 만들지않고 선언함
             
@@ -82,17 +83,10 @@ public class ServerApp {
                     PrintWriter out=new PrintWriter(new BufferedOutputStream(socket.getOutputStream()));
                     BufferedReader in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     ){
-                System.out.println(in.readLine());
-                out.println("OK 오호라!! 접속을 하셨다?"); out.flush();
 
-                while(true) {
                     String requestLine = in.readLine();
-                    if(requestLine.equals("EXIT")) {
-                        out.println("goodbye");
-                        out.println();
-                        out.flush();
-                        break;
-                    }
+                    System.out.println("클라이언트 요청을 받았따? 안받았다? ");
+                   
 
                     // 요청 객체 준비 
                     Request request = new Request(requestLine);
@@ -106,7 +100,7 @@ public class ServerApp {
                         out.println("해당 메뉴가 없습니다.");
                         out.println();
                         out.flush();
-                        continue;
+                        return;
                     }
                     try {
                         // 요청 핸들러 호출
@@ -118,9 +112,12 @@ public class ServerApp {
                     }
                     out.println();
                     out.flush();
-                }
+                    
             }catch(Exception e) {
                 System.out.println(e.getMessage());
+            }finally {
+                System.out.println("오~호라! 클라이언트에게 응답을 하였숨다");
+                System.out.println("오~호라! 클라이언트와 연결을 끓음!");
             }
         } //run()
     }//RequestWorker class
