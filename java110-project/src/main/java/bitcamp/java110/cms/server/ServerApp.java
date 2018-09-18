@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -55,7 +56,7 @@ public class ServerApp {
             System.out.println("오~호라~! 크라이언트가 연결되었다!");
             RequestWorker worker = new RequestWorker(socket);
             new Thread(worker).start(); // 여기서만 쓰기때문에 변수를 따로 만들지않고 선언함
-            
+
         }
     }
 
@@ -83,36 +84,46 @@ public class ServerApp {
                     PrintWriter out=new PrintWriter(new BufferedOutputStream(socket.getOutputStream()));
                     BufferedReader in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     ){
-
-                    String requestLine = in.readLine();
-                    System.out.println("클라이언트 요청을 받았따? 안받았다? ");
-                   
-
-                    // 요청 객체 준비 
-                    Request request = new Request(requestLine);
-                    // 응답 객체 준비
-                    Response response = new Response(out);
-
-                    RequestMappingHandler mapping = 
-                            requestHandlerMap.getMapping(request.getAppPath());
-
-                    if (mapping == null) {
-                        out.println("해당 메뉴가 없습니다.");
-                        out.println();
-                        out.flush();
-                        return;
+                // HTTP 요청 처리
+                System.out.println("클라이언트 요청을 받았따? 안받았다? ");
+                boolean firstLine=true;
+                String requestURI = "";
+                while(true) {
+                    String line=in.readLine();
+                    if(line.length()==0)
+                        break;
+                    if(firstLine) {
+                        requestURI= line.split(" ")[1];
+                        firstLine=false;
+                        
                     }
-                    try {
-                        // 요청 핸들러 호출
-                        mapping.getMethod().invoke(mapping.getInstance(), request, response);
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        out.println("요청 처리 중에 오류가 발생했습니다.");
-                    }
-                    out.println();
-                    out.flush();
-                    
+                }
+                // 요청 객체 준비 
+                Request request = new Request(requestURI.substring(1));
+                // 응답 객체 준비
+                StringWriter strWriter=new StringWriter();
+                PrintWriter bufOut=new PrintWriter(strWriter);
+                Response response = new Response(bufOut);
+
+                RequestMappingHandler mapping = 
+                        requestHandlerMap.getMapping(request.getAppPath());
+
+                if (mapping == null) {
+                    bufOut.println("해당 메뉴가 없습니다.");
+                    return;
+                }
+                try {
+                    // 요청 핸들러 호출
+                    mapping.getMethod().invoke(mapping.getInstance(), request, response);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    bufOut.println("요청 처리 중에 오류가 발생했습니다.");
+                }
+
+                responseHTTPMessage(out, strWriter.toString());
+
             }catch(Exception e) {
                 System.out.println(e.getMessage());
             }finally {
@@ -120,6 +131,15 @@ public class ServerApp {
                 System.out.println("오~호라! 클라이언트와 연결을 끓음!");
             }
         } //run()
+
+
+        private void responseHTTPMessage(PrintWriter out, String message) {
+            out.println("HTTP/1.1 200 OK");
+            out.println("Content-Type: text/plain;charset=UTF-8");
+            out.println();
+            out.println(message);
+            out.flush();
+        }
     }//RequestWorker class
 } //ServletApp class
 
