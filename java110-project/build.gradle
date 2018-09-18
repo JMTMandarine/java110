@@ -2,8 +2,8 @@
 
 plugins {
     id 'java'
-    id 'application'
-    id 'eclipse'
+    id 'eclipse-wtp'
+    id 'war'
 }
 
  tasks.withType(JavaCompile) { 
@@ -13,11 +13,11 @@ plugins {
   } 
 
 
-mainClassName = 'bitcamp.java110.cms.App'
-
 // 프로젝트에서 사용할 라이브러리 설정
 // => 라이브러리 정보는 mvnrepository.com에서 검색하여 가져옴.
 dependencies {
+    //tomcat서버에 이미있기때문에 설치할때만 생성해주고 war파일로 압축 할때는 포함하지않게 설정 (providedCompile)
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     // mariadb jdbc driver
     compile group: 'org.springframework', name: 'spring-context', version: '5.0.9.RELEASE'
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
