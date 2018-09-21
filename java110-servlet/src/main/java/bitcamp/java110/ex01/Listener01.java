@@ -7,7 +7,6 @@ package bitcamp.java110.ex01;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
 // 웹 애플리케이션이 시작되거나 종료되는 상황일 때 실행되는 리스너 만들기 
 //@WebListener
