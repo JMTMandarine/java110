@@ -6,24 +6,17 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import bitcamp.java110.cms.annotation.RequestMapping;
 import bitcamp.java110.cms.dao.ManagerDao;
 import bitcamp.java110.cms.domain.Manager;
 
-@Component
 public class ManagerController { 
 
     ManagerDao managerDao;
   
-    @Autowired
     public void setManagerDao(ManagerDao managerDao) {
         this.managerDao = managerDao;
     }
     
-    @RequestMapping("manager/add")
     public void add(ServletRequest request, ServletResponse response) 
             throws Exception {
         
@@ -40,7 +33,6 @@ public class ManagerController {
         
     }
     
-    @RequestMapping("manager/delete")
     public void delete(ServletRequest request, ServletResponse response) 
             throws Exception {
         int no = Integer.parseInt(request.getParameter("no"));
@@ -54,7 +46,6 @@ public class ManagerController {
         }
     }
     
-    @RequestMapping("manager/detail")
     public void detail(ServletRequest request, ServletResponse response) 
             throws Exception {
         int no = Integer.parseInt(request.getParameter("no"));
@@ -74,7 +65,6 @@ public class ManagerController {
         out.printf("전화: %s\n", m.getTel());
     }
     
-    @RequestMapping("manager/list")
     public void list(ServletRequest request, ServletResponse response) 
             throws Exception {
         PrintWriter out = response.getWriter();

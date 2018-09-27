@@ -23,6 +23,8 @@ public abstract class MyHttpServlet extends GenericServlet{
         HttpServletResponse httRes= (HttpServletResponse)res;
         this.service(httReq, httRes);
     }
+    
+    
     public abstract void service(HttpServletRequest request,
             HttpServletResponse response ) throws ServletException, IOException;
 

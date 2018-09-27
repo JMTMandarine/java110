@@ -6,24 +6,17 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import bitcamp.java110.cms.annotation.RequestMapping;
 import bitcamp.java110.cms.dao.TeacherDao;
 import bitcamp.java110.cms.domain.Teacher;
 
-@Component
 public class TeacherController {
     
     TeacherDao teacherDao;
     
-    @Autowired
     public void setTeacherDao(TeacherDao teacherDao) {
         this.teacherDao = teacherDao;
     }
 
-    @RequestMapping("teacher/add")
     public void add(ServletRequest request, ServletResponse response)
             throws Exception {
         Teacher t=new Teacher();
@@ -41,7 +34,6 @@ public class TeacherController {
         
     }
     
-    @RequestMapping("teacher/delete")
     public void delete(ServletRequest request, ServletResponse response) 
             throws Exception {
         int no = Integer.parseInt(request.getParameter("no"));
@@ -55,7 +47,6 @@ public class TeacherController {
         }
     }
     
-    @RequestMapping("teacher/detail")
     public void detail(ServletRequest request, ServletResponse response)
             throws Exception {
         int no = Integer.parseInt(request.getParameter("no"));
@@ -76,7 +67,6 @@ public class TeacherController {
         out.printf("강의과목: %s\n", t.getSubjects());
     }
     
-    @RequestMapping("teacher/list")
     public void list(ServletRequest request, ServletResponse response)
             throws Exception {
         PrintWriter out=response.getWriter();
