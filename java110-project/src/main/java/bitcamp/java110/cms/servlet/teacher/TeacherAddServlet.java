@@ -16,14 +16,18 @@ import bitcamp.java110.cms.domain.Teacher;
 public class TeacherAddServlet extends HttpServlet { 
     private static final long serialVersionUID = 1L;
     
-    TeacherDao teacherDao=
-            (TeacherDao)this.getServletContext().getAttribute("teacherDao");
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        Teacher t=new Teacher();
+        request.setCharacterEncoding("UTF-8");
         
+        TeacherDao teacherDao=
+                (TeacherDao)this.getServletContext().getAttribute("teacherDao");
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        Teacher t=new Teacher();
         t.setName(request.getParameter("name"));
         t.setEmail(request.getParameter("email"));
         t.setPassword(request.getParameter("password"));
@@ -31,9 +35,22 @@ public class TeacherAddServlet extends HttpServlet {
         t.setTel(request.getParameter("tel"));
         t.setSubjects(request.getParameter("subject"));
         
-        response.setContentType("text/plain;charset=UTF-8");
-        teacherDao.insert(t);
-        PrintWriter out = response.getWriter();
-        out.println("성공적으로 등록하셨습니다.");
+        try {
+            teacherDao.insert(t);
+            out.println("<p>저장하셨습니다.</p>");
+        }catch(Exception e){
+            out.println("<p>이메일 등록 중 오류 발생!</p>");
+            e.printStackTrace();
+        }
+        out.printf("<button type='button' onclick='main()'>메인으로</button>");
+        
+        out.println("<script>");
+        out.println("function main() {");
+        out.printf("location.href = 'list'");
+        out.println("}");
+        out.println("</script>");
+        out.println("</body>");
+        out.println("</html>");
+        
     }
 }

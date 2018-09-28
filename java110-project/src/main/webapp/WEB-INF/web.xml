@@ -35,14 +35,10 @@
 
     <!-- 리스너 클래스에 대한 정보 설정 -->
     
-    
-    <!-- <request-character-encoding>UTF-8</request-character-encoding> -->
+    <!-- 다음 태그가 지원이 안되는 경우 
+         request.setCharacterEncoding()으로 POST 요청 한글 데이터를 처리해야 한다.
+         <request-character-encoding>UTF-8</request-character-encoding> -->
 
-    <!-- 서블릿 클래스에 대한 정보 설정 -->
-    <!-- InitServlet은 클라이언트의 요청을 처리하는 서블릿이 아니기 때문에
-         URL을 지정하지 않음. 
-                       대신 클라이언트가 요청하지 않아도 init()가 호출되어야 하기 때문에
-         loadOnStartup 배치 속성을 추가한다-->
          
     <!-- 리스너 배치하기 -->
     <listener>

@@ -216,7 +216,6 @@ public class StudentMysqlDao implements StudentDao {
             throw new DaoException(e);
             
         } finally {
-            try{con.close();} catch(Exception e2) {}
             try {stmt.close();} catch (Exception e) {}
         }
     }
