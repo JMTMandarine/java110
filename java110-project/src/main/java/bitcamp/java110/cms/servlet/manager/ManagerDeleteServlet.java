@@ -1,7 +1,6 @@
 package bitcamp.java110.cms.servlet.manager;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,22 +33,11 @@ public class ManagerDeleteServlet extends HttpServlet {
             managerDao.delete(no);
             response.sendRedirect("list");
         } catch(Exception e) {
-            response.setHeader("Refresh", "1;url=list");
+            request.setAttribute("error", e);
+            request.setAttribute("message", "매니저 삭제오류!");
+            request.setAttribute("refresh", "3;url=list");
             
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out=response.getWriter();
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset='UTF-8'>");
-            out.println("<title>매니저 관리</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>매니저 삭제 오류</h1>");
-            out.printf("<p>%s</p>",e.getMessage());
-            out.println("<p>잠시 후 목록페이지로 자동이동됩니다.</p>");
-            out.println("</body>");
-            out.println("</html>");
+            request.getRequestDispatcher("/error").forward(request, response);
         }
         
         
