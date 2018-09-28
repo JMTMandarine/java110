@@ -35,34 +35,39 @@ public class ManagerAddServlet extends HttpServlet {
         m.setTel(request.getParameter("tel"));
         m.setPosition(request.getParameter("position"));
         
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        // 등록 결과를 출력하고 1초가 경과한 후에 목록 페이지를 요청하도록
+        // "리프레시" 명령을 설정한다.
+        // => 응답할 때 응답 헤더로 리프래시에 대한 명령을 웹브라우저에게 전달한다.
         
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<meta charset='UTF-8'>");
-        out.println("<title>매니저 관리</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>매니저 등록 결과</h1>");
+        
         
         try {
             managerDao.insert(m);
-            out.println("<p>저장하였습니다.</p>");
+            // 오류없이 등록에 성공했으면 목록 페이지로 돌아가라고
+            // Redirect명령을 보낸다.
+            response.sendRedirect("list");
         } catch (Exception e){
             e.printStackTrace();
-            out.println("<p>이메일 등록 중 오류 발생!</p>");
+            
+            response.setHeader("Refresh", "3;url=list");
+            
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<meta charset='UTF-8'>");
+            out.println("<title>매니저 관리</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>매니저 등록 오류</h1>");
+            out.printf("<p>%s</p>",e.getMessage());
+            out.println("<p>잠시 후 목록페이지로 자동이동됩니다.</p>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        out.printf("<button type='button' onclick='main()'>메인으로</button>");
         
-        out.println("<script>");
-        out.println("function main() {");
-        out.printf("location.href = 'list'");
-        out.println("}");
-        out.println("</script>");
-        out.println("</body>");
-        out.println("</html>");
     }
     
 }

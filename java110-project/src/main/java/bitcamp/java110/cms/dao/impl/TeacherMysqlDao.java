@@ -55,7 +55,7 @@ public class TeacherMysqlDao implements TeacherDao {
             return 1;
             
         } catch (Exception e) {
-            try{con.close();} catch(Exception e2) {}
+            try{con.rollback();} catch(Exception e2) {}
             throw new DaoException(e);
             
         } finally {
@@ -213,7 +213,7 @@ public class TeacherMysqlDao implements TeacherDao {
             return 1;
             
         } catch (Exception e) {
-            try{con.close();} catch(Exception e2) {}
+            try{con.rollback();} catch(Exception e2) {}
             throw new DaoException(e);
             
         } finally {

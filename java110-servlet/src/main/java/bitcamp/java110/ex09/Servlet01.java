@@ -2,7 +2,7 @@
  * => 클라이언트에
  * 
 */    
-package bitcamp.java110.ex08;
+package bitcamp.java110.ex09;
 
 import java.io.IOException;
 import java.io.PrintWriter;

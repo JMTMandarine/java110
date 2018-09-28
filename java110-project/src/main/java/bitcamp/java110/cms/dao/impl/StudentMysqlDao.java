@@ -55,7 +55,7 @@ public class StudentMysqlDao implements StudentDao {
             return 1;
             
         } catch (Exception e) {
-            try{con.close();} catch(Exception e2) {}
+            try{con.rollback();} catch(Exception e2) {}
             throw new DaoException(e);
             
         } finally {
@@ -213,7 +213,9 @@ public class StudentMysqlDao implements StudentDao {
             return 1;
             
         } catch (Exception e) {
+            try{con.rollback();} catch(Exception e2) {}
             throw new DaoException(e);
+            
             
         } finally {
             try {stmt.close();} catch (Exception e) {}
