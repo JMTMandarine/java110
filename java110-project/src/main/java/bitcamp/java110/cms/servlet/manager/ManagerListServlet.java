@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +34,7 @@ public class ManagerListServlet extends HttpServlet{
         out.println("<head>");
         out.println("<meta charset-'UTF-8'>");
         out.println("<title>매니저 관리</title>");
+        out.println("<link rel='stylesheet' href='../css/common.css'>");
         out.println("<style>");
         out.println("table, th, td{");
         out.println("border: 1px solid silver");
@@ -40,6 +42,11 @@ public class ManagerListServlet extends HttpServlet{
         out.println("</style>");
         out.println("</head>");
         out.println("<body>");
+        
+        // 페이지에 머리말 포함하기
+        RequestDispatcher rd = request.getRequestDispatcher("/header");
+        rd.include(request, response);
+        
         out.println("<h1>매니저 목록</h1>");
         
         out.println("<p><a href='form.html'>추가</a></p>");
@@ -61,6 +68,10 @@ public class ManagerListServlet extends HttpServlet{
         }
         out.println("</tbody>");
         out.println("</table>");
+        //페이지 꼬릿말포함하기
+        rd = request.getRequestDispatcher("/footer");
+        rd.include(request, response);
+        
         out.println("</body>");
         out.println("</html>");
     }

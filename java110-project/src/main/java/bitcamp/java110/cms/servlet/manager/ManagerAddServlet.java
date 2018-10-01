@@ -56,6 +56,8 @@ public class ManagerAddServlet extends HttpServlet {
             request.setAttribute("message", "매니저 등록오류!");
             request.setAttribute("refresh", "3;url=list");
             
+            
+            
             //작업을 위임한다.
             rd.forward(request, response);
             
