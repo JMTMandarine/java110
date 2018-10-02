@@ -43,13 +43,13 @@ public class Servlet02 extends  HttpServlet{
         // out.flush();
         
         // 클라이언트에게 즉시 다음 URL로 요청하게 명령한다.
-        res.sendRedirect("http://google.com");
+        // res.sendRedirect("http://google.com");
         
         // 질문1) 그럼 지금까지 출력한 내용은 어떻게 되나여?
         // => out.println() 등을 사용하여 출력한 내용은 
         //    실제 내부 버퍼에 보관되어 있다.
         //    즉 아직 출력하지 않은 상태이다.
-        // => sendRedirect()를 호출하면 이버퍼에 보관된 내용을 버려 버린다.
+        // => sendRedirect()를 호출하면 이버퍼에 보관된 내용을 버려 버린다. 
         // => 응답할 때도 웹브라우저에게 message-body를 출력하지 않는다.
         //
         // 질문2) 버퍼가 꽉차면 어떻게 되나여?

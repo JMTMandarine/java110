@@ -29,7 +29,7 @@ public class Servlet03 extends  HttpServlet{
         out.println("<html>");
         out.println("<head>");
         out.println("<meta charset='UTF-8'>");
-        out.println("<title>ex08!</title>");
+        out.println("<title>ex09!</title>");
         out.println("</head>");
         out.println("<body>");
         out.println("<h1>계산 오류!</h1>");
