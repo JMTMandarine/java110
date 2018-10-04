@@ -12,19 +12,18 @@ import bitcamp.java110.cms.domain.Student;
 import bitcamp.java110.cms.util.DataSource;
 
 public class StudentMysqlDao implements StudentDao {
-    
+
     DataSource dataSource;
     
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     public int insert(Student student) throws DaoException {
         Connection con = null;
         Statement stmt = null;
         
         try {
-            
             con = dataSource.getConnection();
             
             con.setAutoCommit(false);
@@ -55,7 +54,7 @@ public class StudentMysqlDao implements StudentDao {
             return 1;
             
         } catch (Exception e) {
-            try{con.rollback();} catch(Exception e2) {}
+            try {con.rollback();} catch (Exception e2) {}
             throw new DaoException(e);
             
         } finally {
@@ -204,7 +203,7 @@ public class StudentMysqlDao implements StudentDao {
             int count = stmt.executeUpdate(sql);
             
             if (count == 0)
-                return 0;
+                throw new Exception("일치하는 번호가 없습니다.");
             
             String sql2 = "delete from p1_memb where mno=" + no;
             stmt.executeUpdate(sql2);
@@ -213,9 +212,8 @@ public class StudentMysqlDao implements StudentDao {
             return 1;
             
         } catch (Exception e) {
-            try{con.rollback();} catch(Exception e2) {}
+            try {con.rollback();} catch (Exception e2) {}
             throw new DaoException(e);
-            
             
         } finally {
             try {stmt.close();} catch (Exception e) {}
@@ -234,17 +232,17 @@ public class StudentMysqlDao implements StudentDao {
             stmt = con.createStatement();
             rs = stmt.executeQuery(
                     "select" + 
-                            " m.mno," +
-                            " m.name," + 
-                            " m.email," + 
-                            " m.tel," + 
-                            " s.schl," +
-                            " s.work" + 
-                            " from p1_stud s" + 
-                            " inner join p1_memb m on s.sno = m.mno" +
-                            " where m.email='" + email + 
-                            "' and m.pwd=password('"+password
-                            + "')");
+                    " m.mno," +
+                    " m.name," + 
+                    " m.email," + 
+                    " m.tel," + 
+                    " s.schl," +
+                    " s.work" + 
+                    " from p1_stud s" + 
+                    " inner join p1_memb m on s.sno = m.mno" +
+                    " where m.email='" + email + 
+                    "' and m.pwd=password('" + password +
+                    "')");
             
             if (rs.next()) {
                 Student s = new Student();
@@ -254,6 +252,7 @@ public class StudentMysqlDao implements StudentDao {
                 s.setTel(rs.getString("tel"));
                 s.setSchool(rs.getString("schl"));
                 s.setWorking(rs.getString("work").equals("Y") ? true : false);
+                
                 
                 return s;
             }

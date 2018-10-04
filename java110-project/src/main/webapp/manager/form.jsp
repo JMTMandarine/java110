@@ -1,8 +1,7 @@
 <%@ page language="java" 
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    trimDirectiveWhitespaces="true"
-    %>
+    trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,16 +9,17 @@
 <title>매니저 관리</title>
 <link rel='stylesheet' href='../css/common.css'>
 <style>
-table, th, td{
-border: 1px solid silver
+th {
+    text-align: right;
 }
 </style>
 </head>
 <body>
 
-<jsp:include page="../header.jsp"/>
+<jsp:include page="../header.jsp"></jsp:include>
 
-<h1>매니저 등록(NVC)</h1>
+<h1>매니저 등록(MVC)</h1>
+
 <form action='add' method='post'>
 <table>
 <tbody>
@@ -37,7 +37,7 @@ border: 1px solid silver
 </tr>
 <tr>
     <th>전화</th>
-    <td><input type='tel' name='tel'></td>
+    <td><input type="tel" name='tel'></td>
 </tr>
 <tr>
     <th>직위</th>
@@ -47,7 +47,6 @@ border: 1px solid silver
     <th></th>
     <td><button>등록</button></td>
 </tr>
-
 </tbody>
 </table>
 </form>
@@ -56,3 +55,15 @@ border: 1px solid silver
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+    

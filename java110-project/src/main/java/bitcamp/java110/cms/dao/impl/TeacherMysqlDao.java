@@ -12,19 +12,18 @@ import bitcamp.java110.cms.domain.Teacher;
 import bitcamp.java110.cms.util.DataSource;
 
 public class TeacherMysqlDao implements TeacherDao {
-    
+
     DataSource dataSource;
     
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     public int insert(Teacher teacher) throws DaoException {
         Connection con = null;
         Statement stmt = null;
         
         try {
-            
             con = dataSource.getConnection();
             
             con.setAutoCommit(false);
@@ -55,7 +54,7 @@ public class TeacherMysqlDao implements TeacherDao {
             return 1;
             
         } catch (Exception e) {
-            try{con.rollback();} catch(Exception e2) {}
+            try {con.rollback();} catch (Exception e2) {}
             throw new DaoException(e);
             
         } finally {
@@ -204,7 +203,7 @@ public class TeacherMysqlDao implements TeacherDao {
             int count = stmt.executeUpdate(sql);
             
             if (count == 0)
-                return 0;
+                throw new Exception("일치하는 번호가 없습니다.");
             
             String sql2 = "delete from p1_memb where mno=" + no;
             stmt.executeUpdate(sql2);
@@ -213,7 +212,7 @@ public class TeacherMysqlDao implements TeacherDao {
             return 1;
             
         } catch (Exception e) {
-            try{con.rollback();} catch(Exception e2) {}
+            try {con.rollback();} catch (Exception e2) {}
             throw new DaoException(e);
             
         } finally {
@@ -222,8 +221,7 @@ public class TeacherMysqlDao implements TeacherDao {
     }
     
     @Override
-    public Teacher findByEmailPassword
-    (String email, String password) throws DaoException {
+    public Teacher findByEmailPassword(String email, String password) throws DaoException {
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -234,17 +232,17 @@ public class TeacherMysqlDao implements TeacherDao {
             stmt = con.createStatement();
             rs = stmt.executeQuery(
                     "select" + 
-                            " m.mno," +
-                            " m.name," + 
-                            " m.email," + 
-                            " m.tel," + 
-                            " t.hrpay," +
-                            " t.subj" +
-                            " from p1_tchr t" + 
-                            " inner join p1_memb m on t.tno = m.mno" +
-                            " where m.email='" + email + 
-                            "' and m.pwd=password('"+password
-                            + "')");
+                    " m.mno," +
+                    " m.name," + 
+                    " m.email," + 
+                    " m.tel," + 
+                    " t.hrpay," +
+                    " t.subj" +
+                    " from p1_tchr t" + 
+                    " inner join p1_memb m on t.tno = m.mno" +
+                    " where m.email='" + email + 
+                    "' and m.pwd=password('" + password +
+                    "')");
             
             if (rs.next()) {
                 Teacher t = new Teacher();

@@ -5,7 +5,7 @@ public class Teacher extends Member {
     
     protected int pay;
     protected String subjects;
-  
+    
     public int getPay() {
         return pay;
     }

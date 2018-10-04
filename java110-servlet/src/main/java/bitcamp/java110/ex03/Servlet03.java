@@ -1,5 +1,5 @@
-/* 클라이언트로 출력하기 - 한글 깨짐현상 해결하기
- *  
+/* 클라이언트로 출력하기 - HTML 출력
+ * 
  */
 package bitcamp.java110.ex03;
 
@@ -18,8 +18,10 @@ public class Servlet03 extends GenericServlet {
 
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        // 만약 MIME 타입을 text/plain으로 저장한다면, 출력은 텍스트 그대로 출력됨.
-        // HTML로 출력하고 싶을 시 MIME 타입을 text/html로 지정!
+        // 만약 MIME 타입을 text/plain으로 지정한다면,
+        // 출력은 텍스트 그대로 출력될 것이다.
+        // HTML로서 출력하고 싶다면,
+        // MIME 타입을 다음과 같이 text/html로 지정하라!
         res.setContentType("text/html;charset=UTF-8");
         PrintWriter out = res.getWriter();
         
@@ -30,9 +32,42 @@ public class Servlet03 extends GenericServlet {
         out.println("<title>Welcome!</title>");
         out.println("</head>");
         out.println("<body>");
-        out.println("<h1>환영합니당!!!!!!!!!</h1>");
+        out.println("<h1>환영합니다!</h1>");
         out.println("</body>");
         out.println("</html>");
-    }   
-
+        
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

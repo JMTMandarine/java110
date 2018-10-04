@@ -18,5 +18,4 @@ public class Student extends Member {
     public void setWorking(boolean working) {
         this.working = working;
     }
-   
 }

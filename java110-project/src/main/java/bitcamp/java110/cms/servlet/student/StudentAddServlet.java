@@ -13,17 +13,32 @@ import bitcamp.java110.cms.dao.StudentDao;
 import bitcamp.java110.cms.domain.Student;
 
 @WebServlet("/student/add")
-public class StudentAddServlet extends HttpServlet { 
+public class StudentAddServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(
+            HttpServletRequest request, 
+            HttpServletResponse response) 
+                    throws ServletException, IOException {
+        
+        response.setContentType("text/html;charset=UTF-8");
+        
+        // form.jsp 인클루딩
+        RequestDispatcher rd = request.getRequestDispatcher(
+                "/student/form.jsp");
+        rd.include(request, response);
+    }
     
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(
+            HttpServletRequest request, 
+            HttpServletResponse response) 
             throws ServletException, IOException {
-        Student s=new Student();
-        StudentDao studentDao= 
-                (StudentDao)this.getServletContext().getAttribute("studentDao");
+
         request.setCharacterEncoding("UTF-8");
         
+        Student s = new Student();
         s.setName(request.getParameter("name"));
         s.setEmail(request.getParameter("email"));
         s.setPassword(request.getParameter("password"));
@@ -31,22 +46,21 @@ public class StudentAddServlet extends HttpServlet {
         s.setSchool(request.getParameter("school"));
         s.setWorking(Boolean.parseBoolean(request.getParameter("working")));
         
+        StudentDao studentDao = (StudentDao)this.getServletContext()
+                .getAttribute("studentDao");
         
-        try{
+        try {
             studentDao.insert(s);
             response.sendRedirect("list");
-        } catch(Exception e) {
-            RequestDispatcher rd = request.getRequestDispatcher("/error");
             
+        } catch(Exception e) {
             request.setAttribute("error", e);
-            request.setAttribute("message", "학생 등록오류!");
+            request.setAttribute("message", "학생 등록 오류!");
             request.setAttribute("refresh", "3;url=list");
             
-            rd.forward(request, response);
+            request.getRequestDispatcher("/error").forward(request, response);
         }
         
-        
     }
-    
-    
+ 
 }
