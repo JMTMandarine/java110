@@ -37,7 +37,7 @@ th {
 <tr>
     <th>이메일</th>
     <td><input type='email' name='email' 
-               value='<%=email%>'></td>
+               value='${cookie.email.value}'></td>
 </tr>
 <tr>
     <th>암호</th>
