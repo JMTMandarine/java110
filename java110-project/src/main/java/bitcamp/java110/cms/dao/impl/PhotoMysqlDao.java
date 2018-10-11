@@ -37,6 +37,7 @@ public class PhotoMysqlDao implements PhotoDao {
 
         } finally {
             try {stmt.close();} catch (Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
@@ -55,6 +56,7 @@ public class PhotoMysqlDao implements PhotoDao {
 
         } finally {
             try {stmt.close();} catch (Exception e) {}
+            dataSource.returnConnection(con);
         }
     }
 
