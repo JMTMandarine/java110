@@ -21,7 +21,7 @@ public class TransactionManager {
     }
     
     public void startTransaction() throws Exception {
-        // 트랜잭션을 시작하면 미리 Thread가 사용할 커넥션을 준비시킨다ㅣ.
+        // 트랜잭션을 시작하면 미리 Thread가 사용할 커넥션을 준비시킨다.
         dataSource.getConnection(true);
     }
     
