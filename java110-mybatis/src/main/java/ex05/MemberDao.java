@@ -1,6 +1,7 @@
-package ex03;
+package ex05;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -41,11 +42,11 @@ public class MemberDao {
         }
     }
 
-    public List<Member> findAll() {
+    public List<Member> findAll(Map<String,Object> params) {
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
-            return sqlSession.selectList("memberdao.findAll");
+            return sqlSession.selectList("memberdao.findAll", params);
         } finally {
             sqlSession.close();
         }
