@@ -8,7 +8,6 @@ import bitcamp.java110.cms.dao.MemberDao;
 import bitcamp.java110.cms.dao.PhotoDao;
 import bitcamp.java110.cms.domain.Manager;
 import bitcamp.java110.cms.service.ManagerService;
-import bitcamp.java110.cms.util.TransactionManager;
 
 public class ManagerServiceImpl implements ManagerService {
     MemberDao memberDao;

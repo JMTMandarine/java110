@@ -49,10 +49,10 @@ public class ContextLoaderListener implements ServletContextListener {
             managerDao.setSqlSessionFactory(sqlSessionFactory);
             
             StudentMysqlDao studentDao = new StudentMysqlDao();
-//            studentDao.setDataSource(dataSource);
+            studentDao.setSqlSessionFactory(sqlSessionFactory);
             
             TeacherMysqlDao teacherDao = new TeacherMysqlDao();
-//            teacherDao.setDataSource(dataSource);
+            teacherDao.setSqlSessionFactory(sqlSessionFactory);
             
             
             

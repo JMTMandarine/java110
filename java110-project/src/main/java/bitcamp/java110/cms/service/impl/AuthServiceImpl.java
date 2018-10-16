@@ -34,9 +34,9 @@ public class AuthServiceImpl implements AuthService {
         if (memberType.equals("manager")) {
             return managerDao.findByEmailPassword(params);
         } else if (memberType.equals("student")) {
-            return studentDao.findByEmailPassword(email, password);
+            return studentDao.findByEmailPassword(params);
         } else if (memberType.equals("teacher")) {
-            return teacherDao.findByEmailPassword(email, password);
+            return teacherDao.findByEmailPassword(params);
         } else {
             return null;
         }

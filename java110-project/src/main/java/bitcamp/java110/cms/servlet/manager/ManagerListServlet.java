@@ -42,6 +42,7 @@ public class ManagerListServlet extends HttpServlet {
         
         ManagerService managerService = (ManagerService)this.getServletContext()
                 .getAttribute("managerService");
+        
         List<Manager> list = managerService.list(pageNo, pageSize);
         
         request.setAttribute("list", list);
