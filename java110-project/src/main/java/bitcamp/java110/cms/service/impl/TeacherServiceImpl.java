@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import bitcamp.java110.cms.dao.MemberDao;
 import bitcamp.java110.cms.dao.PhotoDao;
@@ -12,13 +14,9 @@ import bitcamp.java110.cms.dao.TeacherDao;
 import bitcamp.java110.cms.domain.Teacher;
 import bitcamp.java110.cms.service.TeacherService;
 
+@Service
 public class TeacherServiceImpl implements TeacherService {
-    SqlSessionFactory sqlSessionFactory;
-
-    public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        this.sqlSessionFactory = sqlSessionFactory;
-    }
-
+    @Autowired SqlSessionFactory sqlSessionFactory;
 
     @Override
     public void add(Teacher teacher) {
@@ -29,13 +27,14 @@ public class TeacherServiceImpl implements TeacherService {
             PhotoDao photoDao=session.getMapper(PhotoDao.class);
             memberDao.insert(teacher);
             teacherDao.insert(teacher);
-            session.commit();
+            
             if(teacher.getPhoto()!=null) {
                 HashMap<String,Object> params = new HashMap<>();
                 params.put("no", teacher.getNo());
                 params.put("photo", teacher.getPhoto());
                 photoDao.insert(params);
             }
+            session.commit();
         }catch(Exception e) {
             session.rollback();
             throw e;

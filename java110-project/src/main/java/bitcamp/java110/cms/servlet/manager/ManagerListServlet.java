@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+
 import bitcamp.java110.cms.domain.Manager;
 import bitcamp.java110.cms.service.ManagerService;
 
@@ -39,9 +41,11 @@ public class ManagerListServlet extends HttpServlet {
             }
         }
         
-        
-        ManagerService managerService = (ManagerService)this.getServletContext()
-                .getAttribute("managerService");
+        ApplicationContext iocContainer = 
+                (ApplicationContext)this.getServletContext()
+                                        .getAttribute("iocContainer");
+        ManagerService managerService =
+                    iocContainer.getBean(ManagerService.class);
         
         List<Manager> list = managerService.list(pageNo, pageSize);
         
