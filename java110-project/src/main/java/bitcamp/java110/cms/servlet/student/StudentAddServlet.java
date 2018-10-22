@@ -3,7 +3,6 @@ package bitcamp.java110.cms.servlet.student;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +14,6 @@ import javax.servlet.http.Part;
 import org.springframework.context.ApplicationContext;
 
 import bitcamp.java110.cms.domain.Student;
-import bitcamp.java110.cms.service.ManagerService;
 import bitcamp.java110.cms.service.StudentService;
 
 @MultipartConfig(maxFileSize=2_000_000)
@@ -29,12 +27,7 @@ public class StudentAddServlet extends HttpServlet {
             HttpServletResponse response) 
                     throws ServletException, IOException {
         
-        response.setContentType("text/html;charset=UTF-8");
-        
-        // form.jsp 인클루딩
-        RequestDispatcher rd = request.getRequestDispatcher(
-                "/student/form.jsp");
-        rd.include(request, response);
+        request.setAttribute("viewUrl", "/student/form.jsp");
     }
     
     @Override
@@ -70,14 +63,14 @@ public class StudentAddServlet extends HttpServlet {
                 s.setPhoto(filename);
             }
             studentService.add(s);
-            response.sendRedirect("list");
+            request.setAttribute("viewUrl", "redirect:list");
             
         } catch(Exception e) {
             request.setAttribute("error", e);
             request.setAttribute("message", "학생 등록 오류!");
             request.setAttribute("refresh", "3;url=list");
+            request.setAttribute("viewUrl", "/error.jsp");
             
-            request.getRequestDispatcher("/error").forward(request, response);
         }
         
     }
