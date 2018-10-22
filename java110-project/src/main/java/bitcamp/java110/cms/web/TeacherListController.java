@@ -3,8 +3,8 @@ package bitcamp.java110.cms.web;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,12 @@ public class TeacherListController {
     @Autowired
     TeacherService teacherService;
     
+    @Autowired
+    ServletContext sc;
+    
     @RequestMapping("/teacher/list")
     public String list(
-            HttpServletRequest request, 
-            HttpServletResponse response) 
+            HttpServletRequest request) 
             throws Exception {
         
         int pageNo=1;
@@ -50,8 +52,7 @@ public class TeacherListController {
     
     @RequestMapping("/teacher/detail")
     public String detail(
-            HttpServletRequest request, 
-            HttpServletResponse response) 
+            HttpServletRequest request) 
             throws Exception {
 
         int no = Integer.parseInt(request.getParameter("no"));
@@ -64,8 +65,7 @@ public class TeacherListController {
     
     @RequestMapping("/teacher/add")
     public String add(
-            HttpServletRequest request, 
-            HttpServletResponse response) 
+            HttpServletRequest request) 
                     throws Exception {
 
         if(request.getMethod().equals("GET")) {
@@ -87,8 +87,7 @@ public class TeacherListController {
         Part part = request.getPart("file1");
         if (part.getSize() > 0) {
             String filename = UUID.randomUUID().toString(); //고유파일명을 가짐.
-            part.write(request.getServletContext()
-                    .getRealPath("/upload/" + filename));
+            part.write(sc.getRealPath("/upload/" + filename));
             t.setPhoto(filename);
         }
         teacherService.add(t);
@@ -99,8 +98,7 @@ public class TeacherListController {
     
     @RequestMapping("/teacher/delete")
     public String delete(
-            HttpServletRequest request, 
-            HttpServletResponse response) 
+            HttpServletRequest request) 
                     throws Exception {
 
         int no = Integer.parseInt(request.getParameter("no"));

@@ -1,6 +1,9 @@
 package bitcamp.java110.cms.servlet;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 
@@ -45,8 +49,15 @@ public class DispatcherServlet extends HttpServlet{
                 throw new Exception("요청을 처리할 수 없습니다.");
             
             // 3) URL을 처리할 메서드를 호출한다.
+            // => 메서드에 넘겨줄 파라미터 값을 준비한다.
+            Object[] paramVlaues = prepareParamVlues(
+                            handler.method,
+                            request,
+                            response); 
+            // => 메서드를 호출한다.
             String viewUrl = (String)handler.method.invoke(
-                                    handler.instance, request, response);
+                                    handler.instance,
+                                    paramVlaues);
 
             if(viewUrl.startsWith("redirect:")) {
                 response.sendRedirect(viewUrl.substring(9));
@@ -64,6 +75,32 @@ public class DispatcherServlet extends HttpServlet{
             rd.include(request, response);
         }
 
+    }
+
+    private Object[] prepareParamVlues(
+                Method method, 
+                HttpServletRequest request,
+                HttpServletResponse response) {
+        
+        // 파라미터의 값을 저장할 리스트 준비
+        ArrayList<Object> paramValues = new ArrayList<>();
+        // 메서드의 파라미터 정보가져오기
+        Parameter[] params = method.getParameters();
+        
+        for (Parameter p : params) {
+            if(p.getType() == HttpServletRequest.class) {
+                paramValues.add(request);
+            }else if (p.getType()==HttpServletResponse.class){
+                paramValues.add(response);
+            }else if (p.getType()==HttpSession.class){
+                paramValues.add(request.getSession());
+            }else {
+                paramValues.add(null);
+            }
+            
+        }
+        
+        return paramValues.toArray();
     }
 
 }
