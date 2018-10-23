@@ -9,15 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import bitcamp.java110.cms.domain.Teacher;
-import bitcamp.java110.cms.mvc.RequestMapping;
-import bitcamp.java110.cms.mvc.RequestParam;
 import bitcamp.java110.cms.service.TeacherService;
 
-@Component
-public class TeacherListController {
+@Controller
+public class TeacherController {
 
     @Autowired
     TeacherService teacherService;
@@ -45,8 +45,7 @@ public class TeacherListController {
     }
 
     @RequestMapping("/teacher/detail")
-    public String detail(
-            @RequestParam(value="no") int no,
+    public String detail(int no,
             Map<String,Object> map) 
                     throws Exception {
 
@@ -78,8 +77,7 @@ public class TeacherListController {
     }
 
     @RequestMapping("/teacher/delete")
-    public String delete(
-            @RequestParam("no") int no) 
+    public String delete(int no) 
                     throws Exception {
 
         teacherService.delete(no);
