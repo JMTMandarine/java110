@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@ page language="java" 
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
@@ -7,8 +8,8 @@
 <html>
 <head>
 <meta charset='UTF-8'>
-<title>매니저 관리</title>
-<link rel='stylesheet' href='/css/common.css'> <%-- 웹 브라우저 입장에서의 주소 경로 --%>
+<title>학생 관리</title>
+<link rel='stylesheet' href='/css/common.css'>
 <style>
 table, th, td {
     border: 1px solid gray;
@@ -17,23 +18,25 @@ table, th, td {
 </head>
 <body>
 
-<jsp:include page="../header.jsp"></jsp:include> <%-- 서버 입장에서의 경로 --%>
+<jsp:include page="../header.jsp"></jsp:include>
 
-<h1>매니저 목록(MVC)</h1>
-<p><a href='add'>추가</a></p>
+<h1>학생 목록(MVC)</h1>
+<p><a href='form'>추가</a></p>
 <table>
 <thead>
 <tr>
-    <th>번호</th> <th>이름</th> <th>이메일</th> <th>직위</th>
+    <th>번호</th><th>이름</th><th>이메일</th> <th>최종학교</th><th>재직여부</th>
 </tr>
 </thead>
 <tbody>
-<c:forEach items="${list }" var="m">
+
+<c:forEach items="${list}" var="s">
 <tr>
-    <td>${m.no}</td>
-    <td><a href='detail?no=${m.no}'>${m.name}</a></td>
-    <td>${m.email}</td>
-    <td>${m.position}</td>
+    <td>${s.no}</td>
+    <td><a href='detail?no=${s.no}'>${s.name}</a></td>
+    <td>${s.email}</td>
+    <td>${s.school}</td>
+    <td>${s.working}</td>
 </tr>
 </c:forEach>
 </tbody>
@@ -43,10 +46,7 @@ table, th, td {
 
 </body>
 </html>
-    
-    
-    
-    
+
     
     
     

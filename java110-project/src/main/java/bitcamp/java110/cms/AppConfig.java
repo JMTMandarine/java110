@@ -9,14 +9,22 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@ComponentScan(basePackages="bitcamp.java110.cms")
+/*@ComponentScan(basePackages="bitcamp.java110.cms",
+               excludeFilters=@Filter( // 필터제외
+                       type=FilterType.REGEX, //정규표현식으로 무엇을 제외할지 설정
+                       pattern="bitcamp.java110.cms.web.*" // 이경로의 모든것 제외
+                       ))*/
+
+// Spring IoC 컨테이너에게 이 클래스가 컨테이너를 위한 설정정보를 담고 있는
+// 클래스라는 것을 알려주기 위해 다음 애노테이션을 추가한다.
+@Configuration 
 @PropertySource("classpath:/bitcamp/java110/cms/conf/jdbc.properties")
 @MapperScan("bitcamp.java110.cms.dao") //Mybatis에서 자동으로 DAO를 생성할 때 사용할 인터페이스가 들어 있는 패키지 설정
 // 트랜잭션 관리자를 활성화 하려면 다음 애노테이션을 붙여야 한다.

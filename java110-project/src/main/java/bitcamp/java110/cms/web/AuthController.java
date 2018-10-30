@@ -7,18 +7,25 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import bitcamp.java110.cms.domain.Member;
 import bitcamp.java110.cms.service.AuthService;
 
 @Controller
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
-    @RequestMapping("/auth/login")
+    @GetMapping("form")
+    public void form(){
+    }
+    
+    @PostMapping("login")
     public String login(
             String type,
             String email,
@@ -27,10 +34,6 @@ public class AuthController {
             HttpServletRequest request, 
             HttpServletResponse response,
             HttpSession session) {
-
-        if(request.getMethod().equals("GET")) {
-            return "/auth/form.jsp";
-        } 
 
         if (save != null) {// 이메일 저장하기를 체크했다면,
             Cookie cookie = new Cookie("email", email);
@@ -65,15 +68,15 @@ public class AuthController {
 
         } else {
             session.invalidate();
-            return "redirect:login";
+            return "redirect:form";
         }
     }
     
-    @RequestMapping("/auth/logout")
+    @RequestMapping("logout")
     public String logout(
             HttpSession session){
         session.invalidate();
-        return "redirect:login";
+        return "redirect:form";
     }
 }
 

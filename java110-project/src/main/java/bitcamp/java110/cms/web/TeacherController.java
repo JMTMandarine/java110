@@ -1,35 +1,42 @@
 package bitcamp.java110.cms.web;
 
+import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import bitcamp.java110.cms.domain.Teacher;
 import bitcamp.java110.cms.service.TeacherService;
 
 @Controller
+@RequestMapping("/teacher")
 public class TeacherController {
 
-    @Autowired
     TeacherService teacherService;
 
-    @Autowired
     ServletContext sc;
 
-    @RequestMapping("/teacher/list")
-    public String list(
-            @RequestParam(value="pageNo", defaultValue="1") int pageNo,
-            @RequestParam(value="pageSize", defaultValue="5") int pageSize,
-            Map<String,Object> map) 
+    
+    
+    public TeacherController(TeacherService teacherService, ServletContext sc) {
+        this.teacherService = teacherService;
+        this.sc = sc;
+    }
+
+    @RequestMapping("list")
+    public void list(
+            @RequestParam(defaultValue="1") int pageNo,
+            @RequestParam(defaultValue="5") int pageSize,
+            Model model) 
                     throws Exception {
 
         if(pageNo<1) {
@@ -40,43 +47,42 @@ public class TeacherController {
         }
 
         List<Teacher> list = teacherService.list(pageNo, pageSize);
-        map.put("list", list);
-        return "/teacher/list.jsp";
+        model.addAttribute("list", list);
     }
 
-    @RequestMapping("/teacher/detail")
-    public String detail(int no,
-            Map<String,Object> map) 
+    @RequestMapping("detail")
+    public void detail(int no,
+            Model model) 
                     throws Exception {
 
         Teacher t = teacherService.get(no);
-        map.put("teacher", t);
-        return "/teacher/detail.jsp";
+        model.addAttribute("teacher", t);
+    }
+    
+    @GetMapping("form")
+    public void form() {
+        
     }
 
-    @RequestMapping("/teacher/add")
+    @PostMapping("add")
     public String add(
             Teacher teacher,
-            HttpServletRequest request) 
+            MultipartFile file1) 
                     throws Exception {
 
-        if(request.getMethod().equals("GET")) {
-            return "/teacher/form.jsp";
-        }
-
-        Part part = request.getPart("file1");
-        if (part.getSize() > 0) {
+        if (file1.getSize() > 0) {
             String filename = UUID.randomUUID().toString(); //고유파일명을 가짐.
-            part.write(sc.getRealPath("/upload/" + filename));
+            file1.transferTo(new File(sc.getRealPath("/upload/" + filename)));
             teacher.setPhoto(filename);
         }
+        
         teacherService.add(teacher);
         return "redirect:list";
 
 
     }
 
-    @RequestMapping("/teacher/delete")
+    @RequestMapping("delete")
     public String delete(int no) 
                     throws Exception {
 
