@@ -21,7 +21,7 @@ public class Test23 {
         car.setAuto(true);
         
         // JSP가 사용할 수 있도록 Model 객체에 저장한다.
-        // => 프론트 컨트롤러는 Model 객체에 저장된 값을 ServletRequest 보관소로 옮긴다.
+        // => 프론트 컨""트롤러는 Model 객체에 저장된 값을 ServletRequest 보관소로 옮긴다.
         model.addAttribute("car",car);
         
         // 다음과 같이 JSP 파일을 웹브라우저에서 요청할 수 있는 폴더에 두게 되면,
