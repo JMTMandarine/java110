@@ -18,66 +18,101 @@ import bitcamp.java110.cms.service.AuthService;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    AuthService authService;
+  @Autowired
+  AuthService authService;
 
-    @GetMapping("form")
-    public void form(){
+  @GetMapping("form")
+  public void form(){
+  }
+
+  @PostMapping("login")
+  public String login(
+      String type,
+      String email,
+      String password,
+      String save,
+      HttpServletRequest request, 
+      HttpServletResponse response,
+      HttpSession session) {
+
+    if (save != null) {// 이메일 저장하기를 체크했다면,
+      Cookie cookie = new Cookie("email", email);
+      cookie.setMaxAge(60 * 60 * 24 * 15);
+      response.addCookie(cookie);
+
+    } else {// 이메일을 저장하고 싶지 않다면,
+      Cookie cookie = new Cookie("email", "");
+      cookie.setMaxAge(0);
+      response.addCookie(cookie);
     }
-    
-    @PostMapping("login")
-    public String login(
-            String type,
-            String email,
-            String password,
-            String save,
-            HttpServletRequest request, 
-            HttpServletResponse response,
-            HttpSession session) {
 
-        if (save != null) {// 이메일 저장하기를 체크했다면,
-            Cookie cookie = new Cookie("email", email);
-            cookie.setMaxAge(60 * 60 * 24 * 15);
-            response.addCookie(cookie);
+    Member loginUser = authService.getMember(email, password, type);
 
-        } else {// 이메일을 저장하고 싶지 않다면,
-            Cookie cookie = new Cookie("email", "");
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-        }
+    if (loginUser != null) {
+      // 회원 정보를 세션에 보관한다.
+      session.setAttribute("loginUser", loginUser);
+      String redirectUrl=null;
 
-        Member loginUser = authService.getMember(email, password, type);
+      switch(type) {
+        case "student": 
+          redirectUrl="../student/list";
+          break;
+        case "teacher": 
+          redirectUrl="../teacher/list";
+          break;
+        case "manager": 
+          redirectUrl="../manager/list";
+          break;
+      }
+      return "redirect:"+redirectUrl;
 
-        if (loginUser != null) {
-            // 회원 정보를 세션에 보관한다.
-            session.setAttribute("loginUser", loginUser);
-            String redirectUrl=null;
-
-            switch(type) {
-            case "student": 
-                redirectUrl="../student/list";
-                break;
-            case "teacher": 
-                redirectUrl="../teacher/list";
-                break;
-            case "manager": 
-                redirectUrl="../manager/list";
-                break;
-            }
-            return "redirect:"+redirectUrl;
-
-        } else {
-            session.invalidate();
-            return "redirect:form";
-        }
+    } else {
+      session.invalidate();
+      return "redirect:form";
     }
-    
-    @RequestMapping("logout")
-    public String logout(
-            HttpSession session){
-        session.invalidate();
-        return "redirect:form";
+  }
+
+  @RequestMapping("logout")
+  public String logout(
+      HttpSession session){
+    session.invalidate();
+    return "redirect:form";
+  }
+
+  @RequestMapping("fblogin")
+  public String fblogin(
+      String accessToken,
+      String type,
+      HttpSession session) {
+
+    try{
+      Member loginUser= authService.GetFacebookMember(accessToken, type);
+
+      // 회원 정보를 세션에 보관한다.
+      session.setAttribute("loginUser", loginUser);
+      String redirectUrl=null;
+
+      switch(type) {
+        case "student": 
+          redirectUrl="../student/list";
+          break;
+        case "teacher": 
+          redirectUrl="../teacher/list";
+          break;
+        case "manager": 
+          redirectUrl="../manager/list";
+          break;
+      }
+      return "redirect:"+redirectUrl;
+
+    }catch(Exception e) {
+      session.invalidate();
+      e.printStackTrace();
+      return "redirect:form";
+      
+
     }
+  }
 }
 
 
